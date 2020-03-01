@@ -1,5 +1,5 @@
 
-class MyBox extends THREE.Object3D {
+class Cono extends THREE.Object3D {
   constructor(gui,titleGui) {
     super();
 
@@ -7,25 +7,33 @@ class MyBox extends THREE.Object3D {
     // Se crea primero porque otros métodos usan las variables que se definen para la interfaz
     this.createGUI(gui,titleGui);
 
+    // Añadimos los ejes del modelo.
+    this.axis = new THREE.AxesHelper(5);
+    this.axis.position.x = -5;
+    this.axis.position.z = 5;
+    this.add(this.axis);
+
     // Un Mesh se compone de geometría y material
-    var boxGeom = new THREE.BoxGeometry(1,1,1);
+    var cono_geom = new THREE.ConeGeometry(1,1,8);
     // Como material se crea uno a partir de un color
-    var boxMat = new THREE.MeshPhongMaterial({color: 0xCF0000});
+    var cono_material = new THREE.MeshPhongMaterial({color: 0xFFFF00});
 
     // Ya podemos construir el Mesh
-    var box = new THREE.Mesh(boxGeom, boxMat);
+    var cono = new THREE.Mesh(cono_geom, cono_material);
     // Y añadirlo como hijo del Object3D (el this)
-    this.add(box);
+    this.add(cono);
 
     // Las geometrías se crean centradas en el origen.
     // Como queremos que el sistema de referencia esté en la base,
     // subimos el Mesh de la caja la mitad de su altura
-    box.position.y = 0.5;
+    cono.position.x = -5;
+    cono.position.y = 0.5;
+    cono.position.z = 5;
   }
 
-  createGUI (gui,titleGui) {
+  createGUI(gui,titleGui) {
     // Controles para el tamaño, la orientación y la posición de la caja
-    this.guiControls = new function () {
+    this.guiControls = new function() {
       this.sizeX = 1.0;
       this.sizeY = 1.0;
       this.sizeZ = 1.0;
@@ -38,9 +46,11 @@ class MyBox extends THREE.Object3D {
       this.posY = 0.0;
       this.posZ = 0.0;
 
+      this.segments = 8;
+
       // Un botón para dejarlo todo en su posición inicial
       // Cuando se pulse se ejecutará esta función.
-      this.reset = function () {
+      this.reset = function() {
         this.sizeX = 1.0;
         this.sizeY = 1.0;
         this.sizeZ = 1.0;
@@ -72,18 +82,20 @@ class MyBox extends THREE.Object3D {
     folder.add(this.guiControls, 'posY', 0.0, 10.0, 0.1).name('Posición Y : ').listen();
     folder.add(this.guiControls, 'posZ', -20.0, 20.0, 0.1).name('Posición Z : ').listen();
 
+    folder.add(this.guiControls, 'segments', 3, 1, 64).name('Segmentos: ').listen();
+
     folder.add(this.guiControls, 'reset').name('[ Reset ]');
   }
 
-  update () {
+  update() {
     // Con independencia de cómo se escriban las 3 siguientes líneas, el orden en el que se aplican las transformaciones es:
     // Primero, el escalado
     // Segundo, la rotación en Z
     // Después, la rotación en Y
     // Luego, la rotación en X
     // Y por último la traslación
-    this.position.set (this.guiControls.posX,this.guiControls.posY,this.guiControls.posZ);
-    this.rotation.set (this.guiControls.rotX,this.guiControls.rotY,this.guiControls.rotZ);
-    this.scale.set (this.guiControls.sizeX,this.guiControls.sizeY,this.guiControls.sizeZ);
+    this.position.set(this.guiControls.posX,this.guiControls.posY,this.guiControls.posZ);
+    this.rotation.set(this.guiControls.rotX,this.guiControls.rotY,this.guiControls.rotZ);
+    this.scale.set(this.guiControls.sizeX,this.guiControls.sizeY,this.guiControls.sizeZ);
   }
 }
