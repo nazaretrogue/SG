@@ -7,31 +7,28 @@ class Cubo extends THREE.Object3D {
     // Se crea primero porque otros métodos usan las variables que se definen para la interfaz
     this.createGUI(gui,titleGui);
 
-    // Añadimos los ejes del modelo.
-    this.axis = new THREE.AxesHelper(5);
-    this.axis.position.x = -10;
-    this.add(this.axis);
-
     // Un Mesh se compone de geometría y material
-    var boxGeom = new THREE.BoxGeometry(1,1,1);
+    var cubo_geom = new THREE.BoxGeometry(1,1,1);
     // Como material se crea uno a partir de un color
-    var boxMat = new THREE.MeshPhongMaterial({color: 0xCF0000});
+    // var cubo_material = new THREE.MeshPhongMaterial({color: 0xCF0000});
+    var cubo_material = new THREE.MeshNormalMaterial();
+    cubo_material.flatShading = true;
+    cubo_material.needsUpdate = true;
 
     // Ya podemos construir el Mesh
-    var box = new THREE.Mesh(boxGeom, boxMat);
+    this.cubo = new THREE.Mesh(cubo_geom, cubo_material);
     // Y añadirlo como hijo del Object3D (el this)
-    this.add(box);
+    this.add(this.cubo);
 
     // Las geometrías se crean centradas en el origen.
     // Como queremos que el sistema de referencia esté en la base,
     // subimos el Mesh de la caja la mitad de su altura
-    box.position.x = -10;
-    box.position.y = 0.5;
+    this.cubo.position.y = 0.5;
   }
 
-  createGUI(gui,titleGui) {
+  createGUI (gui,titleGui) {
     // Controles para el tamaño, la orientación y la posición de la caja
-    this.guiControls = new function() {
+    this.guiControls = new function () {
       this.sizeX = 1.0;
       this.sizeY = 1.0;
       this.sizeZ = 1.0;
@@ -46,7 +43,7 @@ class Cubo extends THREE.Object3D {
 
       // Un botón para dejarlo todo en su posición inicial
       // Cuando se pulse se ejecutará esta función.
-      this.reset = function() {
+      this.reset = function () {
         this.sizeX = 1.0;
         this.sizeY = 1.0;
         this.sizeZ = 1.0;
@@ -81,15 +78,16 @@ class Cubo extends THREE.Object3D {
     folder.add(this.guiControls, 'reset').name('[ Reset ]');
   }
 
-  update() {
+  update () {
     // Con independencia de cómo se escriban las 3 siguientes líneas, el orden en el que se aplican las transformaciones es:
     // Primero, el escalado
     // Segundo, la rotación en Z
     // Después, la rotación en Y
     // Luego, la rotación en X
     // Y por último la traslación
-    this.position.set(this.guiControls.posX,this.guiControls.posY,this.guiControls.posZ);
-    this.rotation.set(this.guiControls.rotX,this.guiControls.rotY,this.guiControls.rotZ);
-    this.scale.set(this.guiControls.sizeX,this.guiControls.sizeY,this.guiControls.sizeZ);
+    this.guiControls.rotY += 0.01;
+    this.position.set (this.guiControls.posX,this.guiControls.posY,this.guiControls.posZ);
+    this.rotation.set (this.guiControls.rotX,this.guiControls.rotY,this.guiControls.rotZ);
+    this.scale.set (this.guiControls.sizeX,this.guiControls.sizeY,this.guiControls.sizeZ);
   }
 }

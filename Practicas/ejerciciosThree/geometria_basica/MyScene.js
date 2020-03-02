@@ -32,13 +32,18 @@ class MyScene extends THREE.Scene {
     this.axis = new THREE.AxesHelper(5);
     this.add(this.axis);
 
+    this.ejes_cono = new THREE.AxesHelper(5);
+    this.ejes_cono.position.x = 10;
+    this.ejes_cono.position.z = 10;
+    this.add(this.ejes_cono);
+
     // Por último creamos el modelo. Incluye ejes propios.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-    this.model = new Cubo(this.gui, "Controles del cubo");
-    this.add(this.model);
-    this.model = new Cono(this.gui, "Controles del cono");
-    this.add(this.model);
+    this.cubo = new Cubo(this.gui, "Controles del cubo");
+    this.add(this.cubo);
+    this.cono = new Cono(this.gui, "Controles del cono");
+    this.ejes_cono.add(this.cono);
   }
 
   createCamera() {
@@ -187,7 +192,8 @@ class MyScene extends THREE.Scene {
     this.cameraControl.update();
 
     // Se actualiza el resto del modelo
-    this.model.update();
+    this.cubo.update();
+    this.cono.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
