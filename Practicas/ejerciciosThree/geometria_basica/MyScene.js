@@ -32,18 +32,47 @@ class MyScene extends THREE.Scene {
     this.axis = new THREE.AxesHelper(5);
     this.add(this.axis);
 
+    // Ejes para el cono
     this.ejes_cono = new THREE.AxesHelper(5);
     this.ejes_cono.position.x = 10;
     this.ejes_cono.position.z = 10;
     this.add(this.ejes_cono);
+
+    // Ejes para el cilindro
+    this.ejes_cil = new THREE.AxesHelper(5);
+    this.ejes_cil.position.x = -10;
+    this.ejes_cil.position.z = -10;
+    this.add(this.ejes_cil);
+
+    // Ejes para el toroide
+    this.ejes_toro = new THREE.AxesHelper(5);
+    this.ejes_toro.position.x = 10;
+    this.ejes_toro.position.z = -10;
+    this.add(this.ejes_toro);
+
+    // Ejes para el icosaedro
+    this.ejes_ico = new THREE.AxesHelper(5);
+    this.ejes_ico.position.x = -10;
+    this.ejes_ico.position.z = 10;
+    this.add(this.ejes_ico);
 
     // Por último creamos el modelo. Incluye ejes propios.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     this.cubo = new Cubo(this.gui, "Controles del cubo");
     this.add(this.cubo);
+
     this.cono = new Cono(this.gui, "Controles del cono");
     this.ejes_cono.add(this.cono);
+
+    this.cilindro = new Cilindro(this.gui, "Controles del cilindro");
+    this.ejes_cil.add(this.cilindro);
+
+    this.toro = new Toroide(this.gui, "Controles del toro");
+    this.ejes_toro.add(this.toro);
+
+    this.ico = new Icosaedro(this.gui, "Controles del icosaedro");
+    this.ejes_ico.add(this.ico);
   }
 
   createCamera() {
@@ -194,6 +223,9 @@ class MyScene extends THREE.Scene {
     // Se actualiza el resto del modelo
     this.cubo.update();
     this.cono.update();
+    this.cilindro.update();
+    this.toro.update();
+    this.ico.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
