@@ -43,6 +43,10 @@ class MyScene extends THREE.Scene {
     // Añadimos el diamante
     this.diamante = new Diamante(this.gui, "Controles del diamante");
     this.add(this.diamante);
+
+    // Añadimos la pica
+    this.pica = new Pica(this.gui, "Controles de la pica");
+    this.add(this.pica);
   }
 
   createCamera() {
@@ -193,6 +197,7 @@ class MyScene extends THREE.Scene {
     // Se actualiza el resto del modelo
     this.corazon.update();
     this.diamante.update();
+    this.pica.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
