@@ -26,7 +26,7 @@ class MyScene extends THREE.Scene {
     this.createCamera();
 
     // Un suelo
-    this.createGround();
+    //this.createGround();
 
     // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
     this.axis = new THREE.AxesHelper(5);
@@ -37,8 +37,12 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     // this.model = new MyBox(this.gui, "Controles de la Caja");
     // this.add(this.model);
-    this.model = new Corazon(this.gui, "Controles del corazón");
-    this.add(this.model);
+    this.corazon = new Corazon(this.gui, "Controles del corazón");
+    this.add(this.corazon);
+
+    // Añadimos el diamante
+    this.diamante = new Diamante(this.gui, "Controles del diamante");
+    this.add(this.diamante);
   }
 
   createCamera() {
@@ -187,8 +191,8 @@ class MyScene extends THREE.Scene {
     this.cameraControl.update();
 
     // Se actualiza el resto del modelo
-    //this.model.update();
-    this.model.update();
+    this.corazon.update();
+    this.diamante.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
