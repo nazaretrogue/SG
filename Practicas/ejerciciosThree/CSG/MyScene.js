@@ -42,6 +42,11 @@ class MyScene extends THREE.Scene {
     this.tuerca.scale.set(5, 5, 5);
     this.tuerca.position.x = 20;
     this.add(this.tuerca);
+
+    this.escuadra = new Escuadra(this.gui, "Escuadra");
+    this.escuadra.scale.set(5, 5, 5);
+    this.escuadra.position.x = -20;
+    this.add(this.escuadra);
   }
 
   createCamera() {
@@ -197,6 +202,7 @@ class MyScene extends THREE.Scene {
     //this.model.update();
     this.taza.update(this.guiControls.animacion);
     this.tuerca.update(this.guiControls.animacion);
+    this.escuadra.update(this.guiControls.animacion);
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render(this, this.getCamera());
