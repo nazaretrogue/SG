@@ -30,11 +30,17 @@ class Taza extends THREE.Object3D {
 
   createGUI(gui, titleGui){
     this.guiControls = new function(){
-
+      this.rotY = 0.0;
+      this.rotZ = 0.0;
     }
   }
 
-  update(){
+  update(giro){
+    if(giro){
+      this.guiControls.rotY += 0.01;
+      this.guiControls.rotZ += 0.01;
 
+      this.rotation.set(0.0, this.guiControls.rotY, this.guiControls.rotZ);
+    }
   }
 }

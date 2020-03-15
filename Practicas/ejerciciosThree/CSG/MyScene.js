@@ -37,6 +37,11 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     this.taza = new Taza(this.gui, "Taza");
     this.add(this.taza);
+
+    this.tuerca = new Tuerca(this.gui, "Tuerca");
+    this.tuerca.scale.set(5, 5, 5);
+    this.tuerca.position.x = 20;
+    this.add(this.tuerca);
   }
 
   createCamera() {
@@ -94,6 +99,7 @@ class MyScene extends THREE.Scene {
       // En el contexto de una función   this   alude a la función
       this.lightIntensity = 0.5;
       this.axisOnOff = true;
+      this.animacion = false;
     }
 
     // Se crea una sección para los controles de esta clase
@@ -104,6 +110,9 @@ class MyScene extends THREE.Scene {
 
     // Y otro para mostrar u ocultar los ejes
     folder.add(this.guiControls, 'axisOnOff').name('Mostrar ejes : ');
+
+    // Animación para los tres objetos
+    folder.add(this.guiControls, 'animacion').name("Animación: ");
 
     return gui;
   }
@@ -186,10 +195,11 @@ class MyScene extends THREE.Scene {
 
     // Se actualiza el resto del modelo
     //this.model.update();
-    this.taza.update();
+    this.taza.update(this.guiControls.animacion);
+    this.tuerca.update(this.guiControls.animacion);
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
-    this.renderer.render (this, this.getCamera());
+    this.renderer.render(this, this.getCamera());
   }
 }
 
