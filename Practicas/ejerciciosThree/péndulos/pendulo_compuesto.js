@@ -41,4 +41,8 @@ class PenduloCompuesto extends THREE.Object3D{
     this.rotation.set(0.0, 0.0, this.guiControls.giro_pend);
     this.pendulo.scale.y = this.guiControls.longitud_pend/5;
   }
+
+  getLongitudRoja(){
+    return this.guiControls.longitud_pend;
+  }
 }

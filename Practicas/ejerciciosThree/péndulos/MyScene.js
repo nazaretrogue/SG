@@ -36,8 +36,11 @@ class MyScene extends THREE.Scene {
     // Por último creamos el modelo.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
+    this.pendulo_compuesto = new PenduloCompuesto(this.gui, "Péndulo bicolor");
+    this.add(this.pendulo_compuesto);
+
     this.pendulo_simple = new PenduloSimple(this.gui, "Péndulo azul");
-    this.add(this.pendulo_simple);
+    this.pendulo_compuesto.add(this.pendulo_simple);
   }
 
   createCamera() {
@@ -186,7 +189,8 @@ class MyScene extends THREE.Scene {
     this.cameraControl.update();
 
     // Se actualiza el resto del modelo
-    this.pendulo_simple.update();
+    this.pendulo_compuesto.update();
+    this.pendulo_simple.update(this.pendulo_compuesto.getLongitudRoja());
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
