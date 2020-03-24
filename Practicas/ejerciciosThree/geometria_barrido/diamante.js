@@ -51,9 +51,6 @@ class Diamante extends THREE.Object3D {
       this.rotZ_circular = 0.0;
     }
 
-    // Se crea una sección para los controles de la caja
-    var folder = gui.addFolder(titleGui);
-
     // No se hace nada
   }
 

@@ -46,6 +46,10 @@ class MyScene extends THREE.Scene {
     // Añadimos el trébol
     this.trebol = new Trebol(this.gui, "Controles del trébol");
     this.add(this.trebol);
+
+    // Recorrido
+    this.recorrido_cor = new CorazonRecorrido(this.gui, "Recorrido");
+    this.add(this.recorrido_cor);
   }
 
   createCamera() {
@@ -198,6 +202,7 @@ class MyScene extends THREE.Scene {
     this.diamante.update();
     this.pica.update();
     this.trebol.update();
+    this.recorrido_cor.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
