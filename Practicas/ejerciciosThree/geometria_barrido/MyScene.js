@@ -32,11 +32,6 @@ class MyScene extends THREE.Scene {
     this.axis = new THREE.AxesHelper(5);
     this.add(this.axis);
 
-    // Por último creamos el modelo.
-    // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
-    // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-    // this.model = new MyBox(this.gui, "Controles de la Caja");
-    // this.add(this.model);
     this.corazon = new Corazon(this.gui, "Controles del corazón");
     this.add(this.corazon);
 
@@ -47,6 +42,10 @@ class MyScene extends THREE.Scene {
     // Añadimos la pica
     this.pica = new Pica(this.gui, "Controles de la pica");
     this.add(this.pica);
+
+    // Añadimos el trébol
+    this.trebol = new Trebol(this.gui, "Controles del trébol");
+    this.add(this.trebol);
   }
 
   createCamera() {
@@ -198,6 +197,7 @@ class MyScene extends THREE.Scene {
     this.corazon.update();
     this.diamante.update();
     this.pica.update();
+    this.trebol.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
