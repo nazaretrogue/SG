@@ -20,6 +20,10 @@ class PenduloSimple extends THREE.Object3D{
       this.longitud_pend = 10;
       this.pos_pend = 0.1;
       this.giro_pend = 0;
+
+      this.animacion = 0.0;
+      this.lim_superior = false;
+      this.lim_inferior = false;
     }
 
     var folder = gui.addFolder(titleGui);
@@ -36,6 +40,38 @@ class PenduloSimple extends THREE.Object3D{
 
     this.position.set(0.0, -posY, 0.0);
     this.rotation.set(0.0, 0.0, this.guiControls.giro_pend);
+    this.scale.set(1.0, this.guiControls.longitud_pend/10, 1.0);
+  }
+
+  update_animacion(longitud_pendulo_rojo, velocidad){
+    this.long_pend_rojo = longitud_pendulo_rojo;
+
+    var posY = 2+(this.long_pend_rojo*this.guiControls.pos_pend)+this.guiControls.longitud_pend/10;
+
+    if(!this.guiControls.lim_superior){
+      this.guiControls.animacion += 0.01*velocidad;
+
+      let aux = this.guiControls.animacion + 0.01*velocidad;
+
+      if(aux >= Math.PI/4){
+        this.guiControls.lim_superior = true;
+        this.guiControls.lim_inferior = false;
+      }
+    }
+
+    else if(!this.guiControls.lim_inferior){
+      this.guiControls.animacion -= 0.01*velocidad;
+
+      let aux = this.guiControls.animacion - 0.01*velocidad;
+
+      if(aux <= -Math.PI/4){
+        this.guiControls.lim_inferior = true;
+        this.guiControls.lim_superior = false;
+      }
+    }
+
+    this.position.set(0.0, -posY, 0.0);
+    this.rotation.set(0.0, 0.0, this.guiControls.animacion);
     this.scale.set(1.0, this.guiControls.longitud_pend/10, 1.0);
   }
 }

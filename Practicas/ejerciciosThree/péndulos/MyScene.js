@@ -98,6 +98,12 @@ class MyScene extends THREE.Scene {
       // En el contexto de una función   this   alude a la función
       this.lightIntensity = 0.5;
       this.axisOnOff = true;
+
+      this.pendulo1 = false;
+      this.velocidad1 = 0.0;
+
+      this.pendulo2 = false;
+      this.velocidad2 = 0.0;
     }
 
     // Se crea una sección para los controles de esta clase
@@ -108,6 +114,12 @@ class MyScene extends THREE.Scene {
 
     // Y otro para mostrar u ocultar los ejes
     folder.add(this.guiControls, 'axisOnOff').name('Mostrar ejes : ');
+
+    var folder2 = gui.addFolder('Animación');
+    folder2.add(this.guiControls, 'pendulo1').name('Animar péndulo bicolor: ');
+    folder2.add(this.guiControls, 'velocidad1', 0.0, 2.0, 0.1).name('Velocidad: ');
+    folder2.add(this.guiControls, 'pendulo2').name('Animar péndulo azul: ');
+    folder2.add(this.guiControls, 'velocidad2', 0.0, 2.0, 0.1).name('Velocidad: ');
 
     return gui;
   }
@@ -189,8 +201,17 @@ class MyScene extends THREE.Scene {
     this.cameraControl.update();
 
     // Se actualiza el resto del modelo
-    this.pendulo_compuesto.update();
-    this.pendulo_simple.update(this.pendulo_compuesto.getLongitudRoja());
+    if(this.guiControls.pendulo1)
+      this.pendulo_compuesto.update_animacion(this.guiControls.velocidad1);
+
+    else
+      this.pendulo_compuesto.update();
+
+    if(this.guiControls.pendulo2)
+      this.pendulo_simple.update_animacion(this.pendulo_compuesto.getLongitudRoja(), this.guiControls.velocidad2);
+
+    else
+      this.pendulo_simple.update(this.pendulo_compuesto.getLongitudRoja());
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
