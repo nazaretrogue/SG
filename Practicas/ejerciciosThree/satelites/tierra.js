@@ -22,7 +22,7 @@ class Tierra extends THREE.Object3D{
   }
 
   update(){
-    this.guiControls.rotacion += 0.015;
+    this.guiControls.rotacion += 0.01;
 
     this.tierra.rotation.y = this.guiControls.rotacion;
   }
