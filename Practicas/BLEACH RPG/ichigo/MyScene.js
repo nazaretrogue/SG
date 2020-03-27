@@ -35,8 +35,8 @@ class MyScene extends THREE.Scene {
     // Por último creamos el modelo.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-    this.coche = new Ichigo(this.gui, "Kurosaki Ichigo");
-    this.add(this.coche);
+    this.ichigo = new Ichigo(this.gui, "Kurosaki Ichigo");
+    this.add(this.ichigo);
   }
 
   createCamera() {
@@ -186,7 +186,7 @@ class MyScene extends THREE.Scene {
 
     // Se actualiza el resto del modelo
     //this.model.update();
-    this.coche.update();
+    this.ichigo.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
