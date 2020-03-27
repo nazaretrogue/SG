@@ -18,21 +18,15 @@ class Aizen extends THREE.Object3D {
                                                 that.add(modelo);
                                               },
                                               null, null);});
-
+    this.position.set(0, 2.2, 2.5);
     this.rotation.x = -Math.PI/2;
   }
 
   createGUI(gui, titleGui){
-    this.guiControls = new function(){
-      this.rotY = 0.0;
-      this.giro = false;
-    }
+    //todo
   }
 
   update(){
-    if(this.guiControls.giro){
-      this.guiControls.rotY += 0.01;
-      this.rotation.y = this.guiControls.rotY;
-    }
+    //todo
   }
 }
