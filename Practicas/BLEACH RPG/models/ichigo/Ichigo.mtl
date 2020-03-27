@@ -1,0 +1,128 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+newmtl b_skin_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_face.png
+illum 2
+#
+#newmtl d_juban_1_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl h_waraji_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_waraji.png
+illum 2
+#
+newmtl i_chain_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_kusari.png
+illum 2
+#
+newmtl a_hair_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_face.png
+illum 2
+#
+newmtl j_kamen_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_face.png
+illum 2
+#
+newmtl f_kimono_1_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_kimono.png
+illum 2
+#
+newmtl g_kimono_2_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_kimono.png
+illum 2
+#
+newmtl k_sode_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_kimono.png
+illum 2
+#
+newmtl b_line_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_juban.png
+illum 2
+#
+newmtl e_juban_2_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_juban.png
+illum 2
+#
+newmtl h_juban_3_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_juban.png
+illum 2
+#
+newmtl c_zangetu_a_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_face.png
+illum 2
+#
+newmtl c_zangetu_b_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd ichigo_face.png
+illum 2
+#
+# EOF

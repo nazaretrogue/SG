@@ -1,0 +1,147 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+newmtl c_Larm_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_face.png
+illum 2
+#
+newmtl d_Rarm_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_face.png
+illum 2
+#
+newmtl b_face_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_face.png
+illum 2
+#
+newmtl k_eri_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_obi.png
+illum 2
+#
+newmtl i_uraji_1_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_obi.png
+illum 2
+#
+newmtl g_uwagi_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+illum 2
+map_Kd grimmjow_uwagi.png
+#
+newmtl f_sode_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_ude.png
+illum 2
+#
+newmtl a_hair_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_hair.png
+illum 2
+#
+newmtl h_hakama_1_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_hakama.png
+illum 2
+#
+newmtl l_obi_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_obi.png
+illum 2
+#
+newmtl i_hakama_2_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+illum 2
+map_Kd grimmjow_hakama.png
+#
+newmtl e_buki_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_face.png
+illum 2
+#
+newmtl b_line_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_face.png
+illum 2
+#
+newmtl m_mask_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_face.png
+illum 2
+#
+newmtl a_saya_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_face.png
+illum 2
+#
+newmtl j_uraji_2_mtl-fx
+Ka  0.4 0.4 0.4
+Kd  1.0 1.0 1.0
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  10.0
+map_Kd grimmjow_obi.png
+illum 2
+#
+# EOF
