@@ -1,210 +1,178 @@
-# 3ds Max Wavefront OBJ Exporter v0.94b - (c)2007 guruware
-# File Created: 08.05.2010 21:03:08
-
-newmtl b_hada_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_hada.png
-
-newmtl h_kutu_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kimono.png
-
-newmtl a_tabi_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kimono.png
-
-newmtl c_hakama_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_hakama.png
-
-newmtl g_hakama_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_hakama.png
-
-newmtl g_kamen_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kamen.png
-
-newmtl h_kamen_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kamen.png
-
-newmtl i_kamen_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kamen.png
-
-newmtl j_kamen_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kamen.png
+# Blender MTL File: 'None'
+# Material Count: 16
 
 newmtl a_kami_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_hada.png
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_hada.png
+
+newmtl a_tabi_mtl_fx.001
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kimono.png
+
+newmtl b_hada_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_hada.png
+
+newmtl b_line_mtl_fx.001
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_hada.png
+
+newmtl c_hakama_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_hakama.png
 
 newmtl c_kimono_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kimono.png
-
-newmtl f_sode_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kimono.png
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kimono.png
 
 newmtl d_haori_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kimono.png
-
-newmtl h_obi_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_hakama.png
-
-newmtl b_line_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_hada.png
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kimono.png
 
 newmtl e_uraji_mtl_fx
-	Ns 20.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 1.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 1.0000 1.0000 1.0000
-	Ks 0.3000 0.3000 0.3000
-	Ke 0.0000 0.0000 0.0000
-	map_Kd F:\Softwrap\YOYOGAMESGM70FINAL\Pre Nuke HD files\Public Documents\Documents\Spriter's resource\Models\Bleach Versus Crusade\Characters\Ulquiorra\ulquiorra_kimono.png
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kimono.png
+
+newmtl f_sode_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kimono.png
+
+newmtl g_hakama_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_hakama.png
+
+newmtl g_kamen_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kamen.png
+
+newmtl h_kamen_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kamen.png
+
+newmtl h_kutu_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kimono.png
+
+newmtl h_obi_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_hakama.png
+
+newmtl i_kamen_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kamen.png
+
+newmtl j_kamen_mtl_fx
+Ns 20.000005
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd ulquiorra_kamen.png
