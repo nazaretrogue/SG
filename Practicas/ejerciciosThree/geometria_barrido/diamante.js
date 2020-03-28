@@ -10,8 +10,6 @@ class Diamante extends THREE.Object3D {
     // Creamos la figura primero
     var diamante_shape = new THREE.Shape();
 
-    var puntos = [];
-
     diamante_shape.moveTo(0, 2);
     diamante_shape.lineTo(0, 2);
     diamante_shape.lineTo(1, 0);
