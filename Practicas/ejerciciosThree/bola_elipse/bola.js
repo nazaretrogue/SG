@@ -31,11 +31,6 @@ class Bola extends THREE.Object3D{
       this.rotacion_bola_x = this.radio_cil;
       this.posicion_bola_y = 1.5;
       this.posicion_bola_z = 0;
-
-      this.centro_derecho_subida = false;
-      this.centro_derecho_bajada = true;
-      this.centro_izquierdo_subida = true;
-      this.centro_izquierdo_bajada = true;
     }
 
     var folder = gui.addFolder(titleGui);
@@ -46,8 +41,6 @@ class Bola extends THREE.Object3D{
   update(){
     this.cilindro.scale.set(this.guiControls.radio_cil/5, 1, 1);
     this.guiControls.rotacion_bola_x += 0.01;
-
-
 
     this.bola_elipse.position.set(this.guiControls.radio_cil, this.guiControls.posicion_bola_y, 0);
     //this.bola.rotation.y = this.guiControls.rotacion_bola_x;
