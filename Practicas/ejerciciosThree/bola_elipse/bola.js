@@ -13,14 +13,12 @@ class Bola extends THREE.Object3D{
     mat_bola.needsUpdate = true;
 
     this.cilindro = new THREE.Mesh(geom_cil, mat_cil);
-    this.bola_elipse = new THREE.Mesh(geom_bola, mat_bola);
-    this.bola = new THREE.Object3D();
+    this.bola = new THREE.Mesh(geom_bola, mat_bola);
 
     this.cilindro.position.y = 1.5;
-    this.bola_elipse.position.set(3, 1.5, 0);
+    this.bola.position.set(3, 1.5, 0);
 
     this.add(this.cilindro);
-    this.bola.add(this.bola_elipse);
     this.add(this.bola);
   }
 
@@ -39,10 +37,30 @@ class Bola extends THREE.Object3D{
   }
 
   update(){
-    this.cilindro.scale.set(this.guiControls.radio_cil/5, 1, 1);
-    this.guiControls.rotacion_bola_x += 0.01;
+    var spline = this.crearSpline();
+    this.cilindro.scale.x = this.guiControls.radio_cil/5;
 
-    this.bola_elipse.position.set(this.guiControls.radio_cil, this.guiControls.posicion_bola_y, 0);
-    //this.bola.rotation.y = this.guiControls.rotacion_bola_x;
+    var tiempo = Date.now();
+    var tiempo_giro = 4000;
+    var t = (tiempo%tiempo_giro)/tiempo_giro;
+    var pos = spline.getPointAt(t);
+    var tangente = spline.getTangentAt(t);
+
+    this.bola.position.copy(pos);
+    pos.add(tangente);
+    this.bola.lookAt(pos);
+  }
+
+  crearSpline(){
+    var puntos = [];
+    for(let i=0; i<2*Math.PI; i+=0.1){
+      let x = this.guiControls.radio_cil*Math.cos(i);
+      let y = 5*Math.sin(i);
+      puntos.push(new THREE.Vector3(x, 1.5, y));
+    }
+
+    var spline = new THREE.CatmullRomCurve3(puntos);
+
+    return spline;
   }
 }
