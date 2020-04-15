@@ -20,7 +20,6 @@ class Escenario extends THREE.Object3D {
                                               },
                                               null, null);});
     this.scale.set(10, 10, 10);
-    //this.rotation.x = -Math.PI/2;
   }
 
   createGUI(gui, titleGui){

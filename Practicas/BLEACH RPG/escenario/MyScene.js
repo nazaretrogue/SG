@@ -45,13 +45,13 @@ class MyScene extends THREE.Scene {
     this.grimmjow.position.x = 10;
     this.add(this.grimmjow);
 
-    this.aizen = new Aizen(this.gui, "Aizen Sousuke");
-    this.aizen.position.z = 10;
-    this.add(this.aizen);
-
-    this.ulquiorra = new Ulquiorra(this.gui, "Ulquiorra Cifer");
-    this.ulquiorra.position.x = -10;
-    this.add(this.ulquiorra);
+    // this.aizen = new Aizen(this.gui, "Aizen Sousuke");
+    // this.aizen.position.z = 10;
+    // this.add(this.aizen);
+    //
+    // this.ulquiorra = new Ulquiorra(this.gui, "Ulquiorra Cifer");
+    // this.ulquiorra.position.x = -10;
+    // this.add(this.ulquiorra);
   }
 
   createCamera() {
@@ -59,7 +59,7 @@ class MyScene extends THREE.Scene {
     //   El ángulo del campo de visión en grados sexagesimales
     //   La razón de aspecto ancho/alto
     //   Los planos de recorte cercano y lejano
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 10000);
     // También se indica dónde se coloca
     this.camera.position.set(20, 10, 20);
     // Y hacia dónde mira
@@ -201,10 +201,10 @@ class MyScene extends THREE.Scene {
 
     // Se actualiza el resto del modelo
     this.escenario.update();
-    this.ichigo.update();
+    //this.ichigo.update();
     this.grimmjow.update();
-    this.aizen.update();
-    this.ulquiorra.update();
+    // this.aizen.update();
+    // this.ulquiorra.update();
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
@@ -219,6 +219,7 @@ $(function() {
 
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener("resize", ()=>scene.onWindowResize());
+  window.addEventListener('keypress', (event)=>scene.ichigo.update(event));
 
   // Que no se nos olvide, la primera visualización.
   scene.update();

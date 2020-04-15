@@ -22,10 +22,32 @@ class Ichigo extends THREE.Object3D {
   }
 
   createGUI(gui, titleGui){
-    //todo
+
   }
 
-  update(){
-    //todo
+  update(event){
+    // Tecla a: movimiento hacia la izquierda
+    if(event.keyCode == "97"){
+      this.position.x -= 0.1;
+      this.rotation.set(-Math.PI/2, 0, -Math.PI/2);
+    }
+
+    // Tecla w: hacia arriba
+    else if(event.keyCode == "119"){
+      this.position.z -= 0.1;
+      this.rotation.set(-Math.PI/2, 0, -Math.PI);
+    }
+
+    // Tecla d: hacia la derecha
+    else if(event.keyCode == "100"){
+      this.position.x += 0.1;
+      this.rotation.set(-Math.PI/2, 0, Math.PI/2);
+    }
+
+    // Tecla s: hacia abajo
+    else if(event.keyCode == "115"){
+      this.position.z += 0.1;
+      this.rotation.set(-Math.PI/2, 0, 0);
+    }
   }
 }
