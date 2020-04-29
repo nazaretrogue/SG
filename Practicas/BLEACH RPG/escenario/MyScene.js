@@ -4,12 +4,16 @@
  * Usaremos una clase derivada de la clase Scene de Three.js para llevar el control de la escena y de todo lo que ocurre en ella.
  */
 
-class MyScene extends THREE.Scene {
+class MyScene extends Physijs.Scene {
   constructor(myCanvas) {
+    Physijs.scripts.worker = '../libs/physijs_worker.js';
+    Physijs.scripts.ammo = '../libs/ammo.js';
+
     super();
 
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
+    this.setGravity(new THREE.Vector3(0, -10, 0));
 
     // Se añade a la gui los controles para manipular los elementos de esta clase
     this.gui = this.createGUI();
@@ -26,7 +30,7 @@ class MyScene extends THREE.Scene {
     this.createCamera();
 
     // Un suelo
-    // this.createGround();
+    this.createGround();
 
     // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
     this.axis = new THREE.AxesHelper(5);
@@ -41,9 +45,9 @@ class MyScene extends THREE.Scene {
     this.ichigo = new Ichigo(this.gui, "Kurosaki Ichigo");
     this.add(this.ichigo);
 
-    this.grimmjow = new Grimmjow(this.gui, "Grimmjow Jaegerjaquez");
-    this.grimmjow.position.x = 10;
-    this.add(this.grimmjow);
+    // this.grimmjow = new Grimmjow(this.gui, "Grimmjow Jaegerjaquez");
+    // this.grimmjow.position.x = 10;
+    // this.add(this.grimmjow);
 
     // this.aizen = new Aizen(this.gui, "Aizen Sousuke");
     // this.aizen.position.z = 10;
@@ -78,17 +82,14 @@ class MyScene extends THREE.Scene {
   }
 
   createGround() {
-    // El suelo es un Mesh, necesita una geometría y un material.
+    // Vamos a crear un suelo físico
 
-    // La geometría es una caja con muy poca altura
-    var geometryGround = new THREE.BoxGeometry(50,0.2,50);
+    var geometria = new THREE.BoxGeometry(110,0.2,110);
+    var mat_transparente = new THREE.MeshNormalMaterial({opacity:0.0,transparent:true})
+    var matf = Physijs.createMaterial(mat_transparente, 0.9, 0.3);
 
-    // El material se hará con una textura de madera
-    var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
-    var materialGround = new THREE.MeshPhongMaterial({map: texture});
-
-    // Ya se puede construir el Mesh
-    var ground = new THREE.Mesh(geometryGround, materialGround);
+    // Ya se puede construir el Mesh físico
+    var ground = new Physijs.BoxMesh(geometria, matf, 0);
 
     // Todas las figuras se crean centradas en el origen.
     // El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
@@ -202,7 +203,7 @@ class MyScene extends THREE.Scene {
     // Se actualiza el resto del modelo
     this.escenario.update();
     //this.ichigo.update();
-    this.grimmjow.update();
+    //this.grimmjow.update();
     // this.aizen.update();
     // this.ulquiorra.update();
 
