@@ -1,8 +1,6 @@
 class Grimmjow extends THREE.Object3D {
-  constructor(gui,titleGui) {
+  constructor() {
     super();
-
-    this.createGUI(gui,titleGui);
 
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
@@ -20,13 +18,6 @@ class Grimmjow extends THREE.Object3D {
                                               null, null);});
 
     this.rotation.x = -Math.PI/2;
-  }
-
-  createGUI(gui, titleGui){
-    this.guiControls = new function(){
-      this.rotY = 0.0;
-      this.giro = false;
-    }
   }
 
   update(){

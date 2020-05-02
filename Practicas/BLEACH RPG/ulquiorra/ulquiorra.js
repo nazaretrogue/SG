@@ -1,8 +1,6 @@
 class Ulquiorra extends THREE.Object3D {
-  constructor(gui,titleGui) {
+  constructor() {
     super();
-
-    this.createGUI(gui,titleGui);
 
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
@@ -18,10 +16,6 @@ class Ulquiorra extends THREE.Object3D {
                                                 that.add(modelo);
                                               },
                                               null, null);});
-  }
-
-  createGUI(gui, titleGui){
-    //todo
   }
 
   update(){

@@ -1,8 +1,6 @@
 class Aizen extends THREE.Object3D {
-  constructor(gui,titleGui) {
+  constructor() {
     super();
-
-    this.createGUI(gui,titleGui);
 
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
@@ -20,10 +18,6 @@ class Aizen extends THREE.Object3D {
                                               null, null);});
     this.position.set(0, 2.2, 2.5);
     this.rotation.x = -Math.PI/2;
-  }
-
-  createGUI(gui, titleGui){
-    //todo
   }
 
   update(){

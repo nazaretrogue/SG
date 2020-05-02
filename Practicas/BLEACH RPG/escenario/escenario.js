@@ -1,8 +1,6 @@
 class Escenario extends THREE.Object3D {
-  constructor(gui,titleGui) {
+  constructor() {
     super();
-
-    this.createGUI(gui,titleGui);
 
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
@@ -20,10 +18,6 @@ class Escenario extends THREE.Object3D {
                                               },
                                               null, null);});
     this.scale.set(10, 10, 10);
-  }
-
-  createGUI(gui, titleGui){
-    //todo
   }
 
   update(){

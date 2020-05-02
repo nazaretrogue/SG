@@ -26,9 +26,6 @@ class MyScene extends Physijs.Scene {
     // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
     this.createLights();
 
-    // Tendremos una cámara con un control de movimiento con el ratón
-    this.createCamera();
-
     // Un suelo
     this.createGround();
 
@@ -39,46 +36,48 @@ class MyScene extends Physijs.Scene {
     // Por último creamos el modelo.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-    this.escenario = new Escenario(this.gui, "Escenario");
+    this.escenario = new Escenario();
     this.add(this.escenario);
 
-    this.ichigo = new Ichigo(this.gui, "Kurosaki Ichigo");
+    this.ichigo = new Ichigo();
     this.add(this.ichigo);
 
-    // this.grimmjow = new Grimmjow(this.gui, "Grimmjow Jaegerjaquez");
+    // var element = new Physijs.BoxMesh(new THREE.BoxGeometry (8,7,11.5),   // Caja de Three
+    //   Physijs.createMaterial(new THREE.MeshLambertMaterial ({color: 0xFFFFFF * Math.random(), wireframe: true})),70.0);
+    //
+    // element.add(this.ichigo);
+    // element.colisionable = true;
+    // this.add(element);
+
+    // this.grimmjow = new Grimmjow();
     // this.grimmjow.position.x = 10;
     // this.add(this.grimmjow);
 
-    // this.aizen = new Aizen(this.gui, "Aizen Sousuke");
+    // this.aizen = new Aizen();
     // this.aizen.position.z = 10;
     // this.add(this.aizen);
     //
-    // this.ulquiorra = new Ulquiorra(this.gui, "Ulquiorra Cifer");
+    // this.ulquiorra = new Ulquiorra();
     // this.ulquiorra.position.x = -10;
     // this.add(this.ulquiorra);
+
+    // Creamos la cámara al final porque su posición depende del personaje
+    this.createCamera();
   }
 
   createCamera() {
-    // Para crear una cámara le indicamos
-    //   El ángulo del campo de visión en grados sexagesimales
-    //   La razón de aspecto ancho/alto
-    //   Los planos de recorte cercano y lejano
+    // Vamos a crear una cámara en tercera persona que siga al personaje. Indicamos
+    // El ángulo del campo de visión en grados sexagesimales, el ratio ancho/alto
+    // y los planos de recorte cercano y lejano
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 10000);
-    // También se indica dónde se coloca
-    this.camera.position.set(20, 10, 20);
-    // Y hacia dónde mira
-    var look = new THREE.Vector3(0,0,0);
+
+    // Se coloca cerca del hombro del personaje principal
+    this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
+
+    // Y mira más allá del personaje
+    var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
     this.camera.lookAt(look);
     this.add(this.camera);
-
-    // Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
-    this.cameraControl = new THREE.TrackballControls(this.camera, this.renderer.domElement);
-    // Se configuran las velocidades de los movimientos
-    this.cameraControl.rotateSpeed = 5;
-    this.cameraControl.zoomSpeed = -2;
-    this.cameraControl.panSpeed = 0.5;
-    // Debe orbitar con respecto al punto de mira de la cámara
-    this.cameraControl.target = look;
   }
 
   createGround() {
@@ -133,11 +132,10 @@ class MyScene extends Physijs.Scene {
     // La añadimos a la escena
     this.add(ambientLight);
 
-    // Se crea una luz focal que va a ser la luz principal de la escena
-    // La luz focal, además tiene una posición, y un punto de mira
-    // Si no se le da punto de mira, apuntará al (0,0,0) en coordenadas del mundo
-    // En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
-    this.spotLight = new THREE.SpotLight(0xffffff, this.guiControls.lightIntensity);
+    // La luz focal de la escena no es blanca, sino violeta muy claro, ya que
+    // el escenario está ambientado en un lugar rocoso con luz de cristales morados
+    // y los reflejos que da por tanto no pueden ser blancos
+    this.spotLight = new THREE.SpotLight(0xD9B3FF, this.guiControls.lightIntensity);
     this.spotLight.position.set(60, 60, 40);
     this.add(this.spotLight);
   }
@@ -149,7 +147,7 @@ class MyScene extends Physijs.Scene {
     var renderer = new THREE.WebGLRenderer();
 
     // Se establece un color de fondo en las imágenes que genera el render
-    renderer.setClearColor(new THREE.Color(0xEEEEEE), 1.0);
+    renderer.setClearColor(new THREE.Color(0x000000), 1.0);
 
     // Se establece el tamaño, se aprovecha la totalidad de la ventana del navegador
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -172,6 +170,15 @@ class MyScene extends Physijs.Scene {
     this.camera.aspect = ratio;
     // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
     this.camera.updateProjectionMatrix();
+  }
+
+  cameraUpdate(){
+    // Actualizamos la posición cuando el personaje se mueve
+    this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
+    var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
+
+    //this.camera.position.applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.4//));
+    this.camera.lookAt(look);
   }
 
   onWindowResize() {
@@ -198,10 +205,9 @@ class MyScene extends Physijs.Scene {
     this.axis.visible = this.guiControls.axisOnOff;
 
     // Se actualiza la posición de la cámara según su controlador
-    this.cameraControl.update();
-
+    this.cameraUpdate();
     // Se actualiza el resto del modelo
-    this.escenario.update();
+    //this.escenario.update();
     //this.ichigo.update();
     //this.grimmjow.update();
     // this.aizen.update();
@@ -209,6 +215,7 @@ class MyScene extends Physijs.Scene {
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
+    this.simulate();
   }
 }
 

@@ -1,8 +1,6 @@
 class Aaroniero extends THREE.Object3D {
-  constructor(gui,titleGui) {
+  constructor() {
     super();
-
-    this.createGUI(gui,titleGui);
 
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
@@ -21,11 +19,7 @@ class Aaroniero extends THREE.Object3D {
     this.scale.set(0.3, 0.3, 0.3);
     this.rotation.x = -Math.PI/2;
   }
-
-  createGUI(gui, titleGui){
-    //todo
-  }
-
+  
   update(){
     //todo
   }
