@@ -18,11 +18,6 @@ class MyScene extends Physijs.Scene {
     // Se añade a la gui los controles para manipular los elementos de esta clase
     this.gui = this.createGUI();
 
-    // Construimos los distinos elementos que tendremos en la escena
-
-    // Todo elemento que se desee sea tenido en cuenta en el renderizado de la
-    // escena debe pertenecer a esta. Bien como hijo de la escena
-    // (this en esta clase) o como hijo de un elemento que ya esté en la escena.
     // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
     this.createLights();
 
@@ -33,21 +28,31 @@ class MyScene extends Physijs.Scene {
     this.axis = new THREE.AxesHelper(5);
     this.add(this.axis);
 
-    // Por último creamos el modelo.
-    // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a
-    // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
+    // Modelos
     this.escenario = new Escenario();
     this.add(this.escenario);
 
     this.ichigo = new Ichigo();
     this.add(this.ichigo);
 
-    // var element = new Physijs.BoxMesh(new THREE.BoxGeometry (8,7,11.5),   // Caja de Three
-    //   Physijs.createMaterial(new THREE.MeshLambertMaterial ({color: 0xFFFFFF * Math.random(), wireframe: true})),70.0);
-    //
-    // element.add(this.ichigo);
-    // element.colisionable = true;
-    // this.add(element);
+    this.caja_ichigo = new Physijs.BoxMesh(new THREE.BoxGeometry(8,7,11.5),   // Caja de Three
+      Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true}), 0.0, 0.0), 70.0);
+
+    var el = new Physijs.BoxMesh(new THREE.BoxGeometry(8,7,11.5),   // Caja de Three
+      Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true})),70.0);
+
+    // Lo situamos por encima del suelo porque si no salta
+    //this.caja_ichigo.position.y = 3.5;
+
+    //this.caja_ichigo.add(this.ichigo);
+    this.caja_ichigo.colisionable = true;
+    this.add(this.caja_ichigo);
+    this.ichigo.position.y = -3.5;
+    this.caja_ichigo.add(this.ichigo);
+
+    el.position.y = 15;
+    el.colisionable = true;
+    this.add(el);
 
     // this.grimmjow = new Grimmjow();
     // this.grimmjow.position.x = 10;
@@ -206,16 +211,18 @@ class MyScene extends Physijs.Scene {
 
     // Se actualiza la posición de la cámara según su controlador
     this.cameraUpdate();
+    this.updateCajasFisicas();
+
     // Se actualiza el resto del modelo
-    //this.escenario.update();
-    //this.ichigo.update();
-    //this.grimmjow.update();
-    // this.aizen.update();
-    // this.ulquiorra.update();
+    //this.ichigo.update("d");
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
     this.simulate();
+  }
+
+  updateCajasFisicas(){
+    this.caja_ichigo.position.set(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
   }
 }
 
@@ -228,6 +235,7 @@ $(function() {
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener("resize", ()=>scene.onWindowResize());
   window.addEventListener('keypress', (event)=>scene.ichigo.update(event));
+  // window.addEventListener('mousedown', (event)=>scene.ichigo.update(event));
 
   // Que no se nos olvide, la primera visualización.
   scene.update();

@@ -32,9 +32,32 @@ class Ichigo extends THREE.Object3D {
     this.add(this.caja);
   }
 
+  ataque(){
+    // Animación de ataque
+    var inicio = {x: this.position.x+0.7};
+    var final = {x: this.position.x};
+
+    var anim_ataque = new TWEEN.Tween(inicio).to(final, 1000).easing(TWEEN.Easing.Elastic.Out).onUpdate(()=>{
+        //var pos = this.curva.getPointAt(origen1.p);
+        this.position.copy(inicio.x);
+        // var tangente = this.curva.getTangentAt(origen1.p);
+        // pos.add(tangente);
+        //
+        // this.nave.lookAt(pos);
+    });
+
+    anim_ataque.start();
+  }
+
   update(event){
+    //TWEEN.update();
+
+    // Ataque con click de ratón
+    if(event.which == 1)
+      TWEEN.update();
+
     // Tecla a: movimiento hacia la derecha
-    if(event.keyCode == "97"){
+     if(event.keyCode == "97"){
       this.position.x += 0.25;
       this.rotation.set(-Math.PI/2, 0, Math.PI/2);
     }
