@@ -35,24 +35,17 @@ class MyScene extends Physijs.Scene {
     this.ichigo = new Ichigo();
     this.add(this.ichigo);
 
-    this.caja_ichigo = new Physijs.BoxMesh(new THREE.BoxGeometry(8,7,11.5),   // Caja de Three
-      Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true}), 0.0, 0.0), 70.0);
-
-    var el = new Physijs.BoxMesh(new THREE.BoxGeometry(8,7,11.5),   // Caja de Three
-      Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true})),70.0);
-
-    // Lo situamos por encima del suelo porque si no salta
-    //this.caja_ichigo.position.y = 3.5;
-
-    //this.caja_ichigo.add(this.ichigo);
-    this.caja_ichigo.colisionable = true;
-    this.add(this.caja_ichigo);
-    this.ichigo.position.y = -3.5;
-    this.caja_ichigo.add(this.ichigo);
-
-    el.position.y = 15;
-    el.colisionable = true;
-    this.add(el);
+    // this.caja_ichigo = new Physijs.BoxMesh(new THREE.BoxGeometry(8,7,11.5),   // Caja de Three
+    //   Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true}), 0.0, 0.0), 70.0);ç
+    //
+    // // Lo situamos por encima del suelo porque si no salta
+    // //this.caja_ichigo.position.y = 3.5;
+    //
+    // //this.caja_ichigo.add(this.ichigo);
+    // this.caja_ichigo.colisionable = true;
+    // this.add(this.caja_ichigo);
+    // this.ichigo.position.y = -3.5;
+    // this.caja_ichigo.add(this.ichigo);
 
     // this.grimmjow = new Grimmjow();
     // this.grimmjow.position.x = 10;
@@ -211,7 +204,7 @@ class MyScene extends Physijs.Scene {
 
     // Se actualiza la posición de la cámara según su controlador
     this.cameraUpdate();
-    this.updateCajasFisicas();
+    // this.updateCajasFisicas();
 
     // Se actualiza el resto del modelo
     //this.ichigo.update("d");
@@ -221,9 +214,9 @@ class MyScene extends Physijs.Scene {
     this.simulate();
   }
 
-  updateCajasFisicas(){
-    this.caja_ichigo.position.set(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
-  }
+  // updateCajasFisicas(){
+  //   this.caja_ichigo.position.set(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
+  // }
 }
 
 /// La función   main
@@ -235,7 +228,7 @@ $(function() {
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener("resize", ()=>scene.onWindowResize());
   window.addEventListener('keypress', (event)=>scene.ichigo.update(event));
-  // window.addEventListener('mousedown', (event)=>scene.ichigo.update(event));
+  window.addEventListener('mousedown', (event)=>scene.ichigo.update(event));
 
   // Que no se nos olvide, la primera visualización.
   scene.update();
