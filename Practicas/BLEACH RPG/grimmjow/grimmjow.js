@@ -2,6 +2,9 @@ class Grimmjow extends THREE.Object3D {
   constructor() {
     super();
 
+    this.puntos = 30;
+    this.atacar = false;
+
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
 
@@ -13,17 +16,22 @@ class Grimmjow extends THREE.Object3D {
                            modelo_loader.load('../models/grimmjow/Grimmjow.obj',
                                               function(obj){
                                                 var modelo = obj;
+                                                modelo.rotation.x = -Math.PI/2;
                                                 that.add(modelo);
                                               },
                                               null, null);});
-
-    this.rotation.x = -Math.PI/2;
   }
 
-  update(){
-    if(this.guiControls.giro){
-      this.guiControls.rotY += 0.01;
-      this.rotation.y = this.guiControls.rotY;
+  async update(pos_enemigo){
+    var damage = 0;
+
+    if(Math.abs(pos_enemigo.x-this.position.x) <= 1.0 ||
+       Math.abs(pos_enemigo.z-this.position.z) <= 1.0){
+         damage = Math.floor(Math.random()*(+4 - +1))+1;
     }
+
+    await new Promise(r => setTimeout(r, 5000));
+
+    return damage;
   }
 }

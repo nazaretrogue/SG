@@ -2,6 +2,8 @@ class Ichigo extends THREE.Object3D {
   constructor() {
     super();
 
+    this.vida = 25;
+
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
 
@@ -13,11 +15,12 @@ class Ichigo extends THREE.Object3D {
                            modelo_loader.load('../models/ichigo/Ichigo.obj',
                                               function(obj){
                                                 var modelo = obj;
+                                                modelo.rotation.x = -Math.PI/2;
                                                 that.add(modelo);
                                               },
                                               null, null);});
 
-    this.rotation.x = -Math.PI/2;
+    //this.rotation.x = -Math.PI/2;
 
     // var geo = new THREE.BoxGeometry(8, 7, 11.5);
     // var mat = new THREE.MeshNormalMaterial({opacity:0.35,transparent:true})
@@ -34,61 +37,80 @@ class Ichigo extends THREE.Object3D {
   }
 
   ataque(){
-    var recorrido = [new THREE.Vector3(this.position.x, this.position.y, this.position.z-2),
-                     new THREE.Vector3(this.position.x+2, this.position.y, this.position.z),
-                     new THREE.Vector3(this.position.x, this.position.y, this.position.z+2),
-                     new THREE.Vector3(this.position.x, this.position.y, this.position.z)];
-
-    this.linea_ataque = new THREE.CatmullRomCurve3(recorrido);
+    this.linea_ataque = this.crearAreaAtaque();
     var that = this;
 
+    var puntos = this.linea_ataque.getPoints(50);
+    var geometry = new THREE.BufferGeometry().setFromPoints(puntos);
+
+    // Para pintar el recorrido
+    var material_8 = new THREE.LineBasicMaterial({color: 0xFFFFFF});
+    var spline = new THREE.Line(geometry, material_8);
+
+    this.add(spline);
+
     // Animación de ataque
-    var inicio = {x: this.position.x, z: this.position.z};
-    var final = {x: this.position.x, z: this.position.z};
+    var posicion = this.position;
+    var inicio = {p: (posicion.x, posicion.y, posicion.z)};
+    var final = {p: (posicion.x+1, posicion.y, posicion.z+1)};
 
-    var anim_ataque = new TWEEN.Tween(inicio).to(final, 4000).easing(TWEEN.Easing.Elastic.Out).onUpdate(()=>{
-        var pos = this.linea_ataque.getPointAt(inicio.x);
+    var anim_ataque = new TWEEN.Tween(inicio).to(final, 1000).easing(TWEEN.Easing.Linear.None).onUpdate(()=>{
+        var pos = that.linea_ataque.getPointAt(inicio.p);
         that.position.copy(pos);
-        var tangente = this.linea_ataque.getTangentAt(inicio.x);
+        var tangente = that.linea_ataque.getTangentAt(inicio.p);
         pos.add(tangente);
+    }).repeat(Infinity).start();
+  }
 
-        //that.lookAt(pos);
-    }).repeat(Infinity);
+  crearAreaAtaque(){
+    var puntos = [];
 
-    anim_ataque.start();
+    for(let i=0; i<2*Math.PI; i+=0.1){
+      let x = 2*Math.cos(i);
+      let y = 2*Math.sin(i);
+      puntos.push(new THREE.Vector3(x, 0, y));
+    }
+
+    var spline = new THREE.CatmullRomCurve3(puntos);
+
+    return spline;
   }
 
   update(event){
-    //TWEEN.update();
-
     // Ataque con click de ratón
+
+    console.log(this.vida);
+
+    if(this.puntos <= 0)
+      this.rotation.x = Math.PI/2;
+
     if(event.which == 1){
       this.ataque();
       TWEEN.update();
     }
 
     // Tecla a: movimiento hacia la derecha
-     if(event.keyCode == "97"){
+    if(event.keyCode == "97"){
       this.position.x += 0.25;
-      this.rotation.set(-Math.PI/2, 0, Math.PI/2);
+      this.rotation.set(0, Math.PI/2, 0);
     }
 
     // Tecla w: hacia abajo
     else if(event.keyCode == "119"){
       this.position.z += 0.25;
-      this.rotation.set(-Math.PI/2, 0, 0.0);
+      this.rotation.set(0, 0, 0);
     }
 
     // Tecla d: hacia la izquierda
     else if(event.keyCode == "100"){
       this.position.x -= 0.25;
-      this.rotation.set(-Math.PI/2, 0, -Math.PI/2);
+      this.rotation.set(0, -Math.PI/2, 0);
     }
 
     // Tecla s: hacia arriba
     else if(event.keyCode == "115"){
       this.position.z -= 0.25;
-      this.rotation.set(-Math.PI/2, 0, Math.PI);
+      this.rotation.set(0, Math.PI, 0);
     }
   }
 }

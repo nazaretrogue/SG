@@ -47,9 +47,9 @@ class MyScene extends Physijs.Scene {
     // this.ichigo.position.y = -3.5;
     // this.caja_ichigo.add(this.ichigo);
 
-    // this.grimmjow = new Grimmjow();
-    // this.grimmjow.position.x = 10;
-    // this.add(this.grimmjow);
+    this.grimmjow = new Grimmjow();
+    this.grimmjow.position.set(10, 0, 20);
+    this.add(this.grimmjow);
 
     // this.aizen = new Aizen();
     // this.aizen.position.z = 10;
@@ -207,7 +207,10 @@ class MyScene extends Physijs.Scene {
     // this.updateCajasFisicas();
 
     // Se actualiza el resto del modelo
-    //this.ichigo.update("d");
+
+    var vida_restada = this.grimmjow.update(this.ichigo.position);
+
+    this.ichigo.vida = this.ichigo.vida - vida_restada;
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
