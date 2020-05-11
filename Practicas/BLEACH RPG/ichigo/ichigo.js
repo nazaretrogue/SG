@@ -2,7 +2,7 @@ class Ichigo extends THREE.Object3D {
   constructor() {
     super();
 
-    this.vida = 25;
+    this.vida = 500;
 
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
@@ -76,13 +76,19 @@ class Ichigo extends THREE.Object3D {
     return spline;
   }
 
+  disminuirVida(damage){
+    this.vida = this.vida - damage;
+
+    if(this.vida <= 0){
+      this.rotation.set(-Math.PI/2, 0, 0);
+      this.position.y = 1;
+    }
+  }
+
   update(event){
     // Ataque con click de ratón
 
     console.log(this.vida);
-
-    if(this.puntos <= 0)
-      this.rotation.x = Math.PI/2;
 
     if(event.which == 1){
       this.ataque();

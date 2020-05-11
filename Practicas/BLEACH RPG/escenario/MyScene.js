@@ -1,9 +1,3 @@
-
-/// La clase fachada del modelo
-/**
- * Usaremos una clase derivada de la clase Scene de Three.js para llevar el control de la escena y de todo lo que ocurre en ella.
- */
-
 class MyScene extends Physijs.Scene {
   constructor(myCanvas) {
     Physijs.scripts.worker = '../libs/physijs_worker.js';
@@ -14,15 +8,6 @@ class MyScene extends Physijs.Scene {
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
     this.renderer = this.createRenderer(myCanvas);
     this.setGravity(new THREE.Vector3(0, -10, 0));
-
-    // Se añade a la gui los controles para manipular los elementos de esta clase
-    this.gui = this.createGUI();
-
-    // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
-    this.createLights();
-
-    // Un suelo
-    this.createGround();
 
     // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
     this.axis = new THREE.AxesHelper(5);
@@ -35,8 +20,12 @@ class MyScene extends Physijs.Scene {
     this.ichigo = new Ichigo();
     this.add(this.ichigo);
 
+    this.alma = new Alma();
+    this.alma.position.set(55, 0, 30);
+    this.add(this.alma);
+
     // this.caja_ichigo = new Physijs.BoxMesh(new THREE.BoxGeometry(8,7,11.5),   // Caja de Three
-    //   Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true}), 0.0, 0.0), 70.0);ç
+    //   Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true}), 0.0, 0.0), 70.0);
     //
     // // Lo situamos por encima del suelo porque si no salta
     // //this.caja_ichigo.position.y = 3.5;
@@ -48,8 +37,11 @@ class MyScene extends Physijs.Scene {
     // this.caja_ichigo.add(this.ichigo);
 
     this.grimmjow = new Grimmjow();
-    this.grimmjow.position.set(10, 0, 20);
+    this.grimmjow.position.set(50, 0, 30);
+    this.grimmjow.rotation.y = -Math.PI/2;
     this.add(this.grimmjow);
+
+    this.juego_fin = false;
 
     // this.aizen = new Aizen();
     // this.aizen.position.z = 10;
@@ -58,6 +50,13 @@ class MyScene extends Physijs.Scene {
     // this.ulquiorra = new Ulquiorra();
     // this.ulquiorra.position.x = -10;
     // this.add(this.ulquiorra);
+
+    // Se añade a la gui los controles para manipular los elementos de esta clase
+    this.gui = this.createGUI();
+
+    // Elementos necesarios en la escena
+    this.createLights();
+    this.createGround();
 
     // Creamos la cámara al final porque su posición depende del personaje
     this.createCamera();
@@ -99,6 +98,7 @@ class MyScene extends Physijs.Scene {
   createGUI() {
     // Se crea la interfaz gráfica de usuario
     var gui = new dat.GUI();
+    var that = this;
 
     // La escena le va a añadir sus propios controles.
     // Se definen mediante una   new function()
@@ -107,6 +107,7 @@ class MyScene extends Physijs.Scene {
       // En el contexto de una función   this   alude a la función
       this.lightIntensity = 0.5;
       this.axisOnOff = true;
+      this.vida_ichigo = that.ichigo.vida;
     }
 
     // Se crea una sección para los controles de esta clase
@@ -117,6 +118,10 @@ class MyScene extends Physijs.Scene {
 
     // Y otro para mostrar u ocultar los ejes
     folder.add(this.guiControls, 'axisOnOff').name('Mostrar ejes : ');
+
+    var personajes = gui.addFolder('Personajes');
+
+    personajes.add(this.guiControls, 'vida_ichigo', 0, this.ichigo.vida, 0).name('Kurosaki Ichigo: ');
 
     return gui;
   }
@@ -208,13 +213,25 @@ class MyScene extends Physijs.Scene {
 
     // Se actualiza el resto del modelo
 
+    this.alma.update();
     var vida_restada = this.grimmjow.update(this.ichigo.position);
+    //console.log(vida_restada);
 
-    this.ichigo.vida = this.ichigo.vida - vida_restada;
+    this.ichigo.disminuirVida(vida_restada);
+
+    if(!this.juego_fin && this.ichigo.vida <= 0){
+      alert("¡Has perdido!");
+      this.juego_fin = true;
+    }
+
+    else if(!this.juego_fin && this.grimmjow.vida <= 0){
+      alert("¡ENHORABUENA! ¡Has ganado! Has recuperado tu alma");
+      this.juego_fin = true;
+    }
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
-    this.simulate();
+    //this.simulate();
   }
 
   // updateCajasFisicas(){
