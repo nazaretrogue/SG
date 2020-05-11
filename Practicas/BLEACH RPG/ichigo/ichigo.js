@@ -80,16 +80,26 @@ class Ichigo extends THREE.Object3D {
     this.vida = this.vida - damage;
 
     if(this.vida <= 0){
-      this.rotation.set(-Math.PI/2, 0, 0);
+      if(this.rotation.y == Math.PI/2)
+        this.rotation.set(0, 0, Math.PI/2);
+
+      else if(this.rotation.y == 0)
+        this.rotation.set(-Math.PI/2, this.rotation.y, 0);
+
+      else if(this.rotation.y == -Math.PI/2)
+        this.rotation.set(0, 0, -Math.PI/2);
+
+      else if(this.rotation.y == Math.PI)
+        this.rotation.set(Math.PI/2, this.rotation.y, 0);
+
       this.position.y = 1;
     }
   }
 
   update(event){
-    // Ataque con click de ratón
-
     console.log(this.vida);
 
+    // Ataque con click de ratón
     if(event.which == 1){
       this.ataque();
       TWEEN.update();
