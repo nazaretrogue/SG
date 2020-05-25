@@ -17,12 +17,15 @@ class MyScene extends Physijs.Scene {
     this.escenario = new Escenario();
     this.add(this.escenario);
 
-    this.ichigo = new Ichigo();
-    this.add(this.ichigo);
+    this.ichigo = new Ichigo('ichigo/Ichigo', 500);
+    //this.add(this.ichigo);
 
-    this.alma = new Alma();
-    this.alma.position.set(55, 0, 30);
-    this.add(this.alma);
+    var geom_caja = new THREE.BoxGeometry(8, 15, 3);
+    var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.35});
+    var mat_fis = Physijs.createMaterial(mat_invisible, 0.0, 0.0);
+    var caja_ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
+    caja_ichigo.add(this.ichigo);
+    this.add(caja_ichigo);
 
     // this.caja_ichigo = new Physijs.BoxMesh(new THREE.BoxGeometry(8,7,11.5),   // Caja de Three
     //   Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true}), 0.0, 0.0), 70.0);
@@ -36,10 +39,14 @@ class MyScene extends Physijs.Scene {
     // this.ichigo.position.y = -3.5;
     // this.caja_ichigo.add(this.ichigo);
 
-    this.grimmjow = new Grimmjow();
+    this.grimmjow = new Grimmjow('grimmjow/Grimmjow', 30);
     this.grimmjow.position.set(50, 0, 30);
     this.grimmjow.rotation.y = -Math.PI/2;
     this.add(this.grimmjow);
+
+    this.alma = new Alma();
+    this.alma.position.set(55, 0, 30);
+    this.add(this.alma);
 
     this.juego_fin = false;
 
@@ -237,6 +244,47 @@ class MyScene extends Physijs.Scene {
   // updateCajasFisicas(){
   //   this.caja_ichigo.position.set(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
   // }
+
+  atacaEnemigo(event){
+    // Ataque con click de ratón
+    if(event.which == 1){
+      if(this.avance){
+        this.ichigo.position.x += 1;
+        this.ichigo.position.z += 1;
+      }
+
+      else{
+        this.ichigo.position.x -= 1;
+        this.ichigo.position.z -= 1;
+      }
+
+      this.ichigo.avance = !this.ichigo.avance;
+      var pos_ichigo = this.ichigo.position;
+      var pos_grimmjow = this.grimmjow.position;
+
+      if(Math.abs(pos_grimmjow.x-pos_ichigo.x) <= 5.0 &&
+         Math.abs(pos_enemigo.z-this.position.z) <= 5.0){
+
+          if(Math.abs(pos_enemigo.x-this.position.x) <= 3.0){
+            if(pos_enemigo.z < this.position.z)
+              this.rotation.y = Math.PI;
+
+            else
+              this.rotation.y = 0.0;
+          }
+
+          if(Math.abs(pos_enemigo.z-this.position.z) <= 3.0){
+            if(pos_enemigo.x < this.position.x)
+              this.rotation.y = -Math.PI/2;
+
+            else
+              this.rotation.y = Math.PI/2;
+          }
+
+          this.grimmjow.disminuirVida(5);
+      }
+    }
+  }
 }
 
 /// La función   main
@@ -248,7 +296,7 @@ $(function() {
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener("resize", ()=>scene.onWindowResize());
   window.addEventListener('keypress', (event)=>scene.ichigo.update(event));
-  window.addEventListener('mousedown', (event)=>scene.ichigo.update(event));
+  window.addEventListener('mousedown', (event)=>scene.atacaEnemigo(event));
 
   // Que no se nos olvide, la primera visualización.
   scene.update();

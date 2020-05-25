@@ -7,6 +7,7 @@ class Ichigo extends THREE.Object3D {
     var modelo_loader = new THREE.OBJLoader();
     var material_loader = new THREE.MTLLoader();
 
+    this.avance = true;
     var that = this;
 
     material_loader.load('../models/ichigo/Ichigo.mtl',
@@ -33,47 +34,6 @@ class Ichigo extends THREE.Object3D {
 
     // //this.caja.add(this);
     // this.add(this.caja);
-    this.ataque();
-  }
-
-  ataque(){
-    this.linea_ataque = this.crearAreaAtaque();
-    var that = this;
-
-    var puntos = this.linea_ataque.getPoints(50);
-    var geometry = new THREE.BufferGeometry().setFromPoints(puntos);
-
-    // Para pintar el recorrido
-    var material_8 = new THREE.LineBasicMaterial({color: 0xFFFFFF});
-    var spline = new THREE.Line(geometry, material_8);
-
-    this.add(spline);
-
-    // Animación de ataque
-    var posicion = this.position;
-    var inicio = {p: (posicion.x, posicion.y, posicion.z)};
-    var final = {p: (posicion.x+1, posicion.y, posicion.z+1)};
-
-    var anim_ataque = new TWEEN.Tween(inicio).to(final, 1000).easing(TWEEN.Easing.Linear.None).onUpdate(()=>{
-        var pos = that.linea_ataque.getPointAt(inicio.p);
-        that.position.copy(pos);
-        var tangente = that.linea_ataque.getTangentAt(inicio.p);
-        pos.add(tangente);
-    }).repeat(Infinity).start();
-  }
-
-  crearAreaAtaque(){
-    var puntos = [];
-
-    for(let i=0; i<2*Math.PI; i+=0.1){
-      let x = 2*Math.cos(i);
-      let y = 2*Math.sin(i);
-      puntos.push(new THREE.Vector3(x, 0, y));
-    }
-
-    var spline = new THREE.CatmullRomCurve3(puntos);
-
-    return spline;
   }
 
   disminuirVida(damage){
@@ -97,13 +57,7 @@ class Ichigo extends THREE.Object3D {
   }
 
   update(event){
-    console.log(this.vida);
-
-    // Ataque con click de ratón
-    if(event.which == 1){
-      this.ataque();
-      TWEEN.update();
-    }
+    console.log(this.vida);TWEEN.update();
 
     // Tecla a: movimiento hacia la derecha
     if(event.keyCode == "97"){
