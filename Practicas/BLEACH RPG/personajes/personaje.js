@@ -1,8 +1,9 @@
-class Personaje extends THREE.Object3D {
+class Personaje extends THREE.Object3D{
   constructor(archivo, puntos_vida) {
     super();
 
     this.vida = puntos_vida;
+    
     var cad_materiales = '../models/'+archivo+'.mtl';
     var cad_modelo = '../models/'+archivo+'.obj'
 

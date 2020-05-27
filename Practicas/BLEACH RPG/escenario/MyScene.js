@@ -18,31 +18,33 @@ class MyScene extends Physijs.Scene {
     this.add(this.escenario);
 
     this.ichigo = new Ichigo('ichigo/Ichigo', 500);
-    //this.add(this.ichigo);
 
-    var geom_caja = new THREE.BoxGeometry(8, 15, 3);
+    var geom_caja = new THREE.BoxGeometry(8, 7, 3);
+    geom_caja.translate(0, 3.5, 0);
+
     var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.35});
     var mat_fis = Physijs.createMaterial(mat_invisible, 0.0, 0.0);
-    var caja_ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
-    caja_ichigo.add(this.ichigo);
-    this.add(caja_ichigo);
 
-    // this.caja_ichigo = new Physijs.BoxMesh(new THREE.BoxGeometry(8,7,11.5),   // Caja de Three
-    //   Physijs.createMaterial(new THREE.MeshLambertMaterial({color: 0xFFFFFF * Math.random(), wireframe: true}), 0.0, 0.0), 70.0);
-    //
-    // // Lo situamos por encima del suelo porque si no salta
-    // //this.caja_ichigo.position.y = 3.5;
-    //
-    // //this.caja_ichigo.add(this.ichigo);
-    // this.caja_ichigo.colisionable = true;
-    // this.add(this.caja_ichigo);
-    // this.ichigo.position.y = -3.5;
-    // this.caja_ichigo.add(this.ichigo);
+    this.caja_ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
+
+    this.caja_ichigo.add(this.ichigo);
+    this.add(this.caja_ichigo);
+
+    /**************************************************************************/
+    /**************************Personajes enemigos*****************************/
+    /**************************************************************************/
 
     this.grimmjow = new Grimmjow('grimmjow/Grimmjow', 30);
-    this.grimmjow.position.set(50, 0, 30);
-    this.grimmjow.rotation.y = -Math.PI/2;
-    this.add(this.grimmjow);
+    // this.grimmjow.position.set(50, 0, 30);
+    // this.grimmjow.rotation.y = -Math.PI/2;
+    //this.add(this.grimmjow);
+
+    this.caja_grimmjow = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
+
+    this.caja_grimmjow.add(this.grimmjow);
+    this.add(this.caja_grimmjow);
+    this.caja_grimmjow.position.set(50, 0, 30);
+    this.caja_grimmjow.rotation.y = -Math.PI/2;
 
     this.alma = new Alma();
     this.alma.position.set(55, 0, 30);
@@ -76,10 +78,10 @@ class MyScene extends Physijs.Scene {
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 10000);
 
     // Se coloca cerca del hombro del personaje principal
-    this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
+    this.camera.position.set(this.caja_ichigo.position.x-10, this.caja_ichigo.position.y+7, this.caja_ichigo.position.z-30);
 
     // Y mira más allá del personaje
-    var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
+    var look = new THREE.Vector3(this.caja_ichigo.position.x, this.caja_ichigo.position.y+7, this.caja_ichigo.position.z);
     this.camera.lookAt(look);
     this.add(this.camera);
   }
@@ -128,7 +130,15 @@ class MyScene extends Physijs.Scene {
 
     var personajes = gui.addFolder('Personajes');
 
-    personajes.add(this.guiControls, 'vida_ichigo', 0, this.ichigo.vida, 0).name('Kurosaki Ichigo: ');
+    personajes.add(this.guiControls, 'vida_ichigo', 0, this.ichigo.vida, 1).listen().name('Kurosaki Ichigo: ');
+
+    // Para actualizar la barra de vida en la pantalla
+    var update_gui = function() {
+      requestAnimationFrame(()=>this.update());
+      personajes.vida_ichigo = that.ichigo.vida;
+    };
+
+    update_gui();
 
     return gui;
   }
@@ -184,8 +194,8 @@ class MyScene extends Physijs.Scene {
 
   cameraUpdate(){
     // Actualizamos la posición cuando el personaje se mueve
-    this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
-    var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
+    this.camera.position.set(this.caja_ichigo.position.x-10, this.caja_ichigo.position.y+7, this.caja_ichigo.position.z-30);
+    var look = new THREE.Vector3(this.caja_ichigo.position.x, this.caja_ichigo.position.y+7, this.caja_ichigo.position.z);
 
     //this.camera.position.applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.4//));
     this.camera.lookAt(look);
@@ -221,10 +231,11 @@ class MyScene extends Physijs.Scene {
     // Se actualiza el resto del modelo
 
     this.alma.update();
-    var vida_restada = this.grimmjow.update(this.ichigo.position);
+    var vida_restada = this.grimmjow.update(this.caja_ichigo.position);
     //console.log(vida_restada);
 
     this.ichigo.disminuirVida(vida_restada);
+    this.guiControls.vida_ichigo -= vida_restada;
 
     if(!this.juego_fin && this.ichigo.vida <= 0){
       alert("¡Has perdido!");
@@ -244,6 +255,32 @@ class MyScene extends Physijs.Scene {
   // updateCajasFisicas(){
   //   this.caja_ichigo.position.set(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
   // }
+
+  mover(event){
+    // Tecla a: hacia la izquierda
+    if(event.keyCode == "97"){
+      this.caja_ichigo.position.x += 0.25;
+      this.caja_ichigo.rotation.set(0, Math.PI/2, 0);
+    }
+
+    // Tecla w: hacia arriba
+    else if(event.keyCode == "119"){
+      this.caja_ichigo.position.z += 0.25;
+      this.caja_ichigo.rotation.set(0, 0, 0);
+    }
+
+    // Tecla d: hacia la derecha
+    else if(event.keyCode == "100"){
+      this.caja_ichigo.position.x -= 0.25;
+      this.caja_ichigo.rotation.set(0, -Math.PI/2, 0);
+    }
+
+    // Tecla s: hacia abajo
+    else if(event.keyCode == "115"){
+      this.caja_ichigo.position.z -= 0.25;
+      this.caja_ichigo.rotation.set(0, Math.PI, 0);
+    }
+  }
 
   atacaEnemigo(event){
     // Ataque con click de ratón
@@ -295,7 +332,7 @@ $(function() {
 
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener("resize", ()=>scene.onWindowResize());
-  window.addEventListener('keypress', (event)=>scene.ichigo.update(event));
+  window.addEventListener('keypress', (event)=>scene.mover(event));
   window.addEventListener('mousedown', (event)=>scene.atacaEnemigo(event));
 
   // Que no se nos olvide, la primera visualización.

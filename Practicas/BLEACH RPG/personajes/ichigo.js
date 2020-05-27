@@ -1,20 +1,6 @@
 class Ichigo extends Personaje {
   constructor(archivo, puntos_vida) {
     super(archivo, puntos_vida);
-
-    //this.rotation.x = -Math.PI/2;
-
-    // var geo = new THREE.BoxGeometry(8, 7, 11.5);
-    // var mat = new THREE.MeshNormalMaterial({opacity:0.35,transparent:true})
-    // var matf = Physijs.createMaterial(mat, 0.9, 0.3);
-    // //this.caja = new THREE.Mesh(geo, mat);
-    // this.caja = new Physijs.BoxMesh(geo, matf, 1.0);
-    //
-    // this.caja.position.z = 3.5;
-    // this.caja.rotation.x = -Math.PI/2;
-
-    // //this.caja.add(this);
-    // this.add(this.caja);
   }
 
   update(event){
