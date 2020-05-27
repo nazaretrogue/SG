@@ -17,32 +17,31 @@ class MyScene extends Physijs.Scene {
     this.escenario = new Escenario();
     this.add(this.escenario);
 
-    this.ichigo = new Ichigo('ichigo/Ichigo', 500);
+    this.modelo_ichigo = new Ichigo('ichigo/Ichigo', 500);
 
     var geom_caja = new THREE.BoxGeometry(8, 7, 3);
     geom_caja.translate(0, 3.5, 0);
 
     var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.35});
-    var mat_fis = Physijs.createMaterial(mat_invisible, 0.0, 0.0);
+    var mat_fis = Physijs.createMaterial(mat_invisible, 0.5, 0.5);
 
-    this.caja_ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
+    this.ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
-    this.caja_ichigo.add(this.ichigo);
-    this.add(this.caja_ichigo);
+    this.ichigo.add(this.modelo_ichigo);
+    this.add(this.ichigo);
 
     /**************************************************************************/
     /**************************Personajes enemigos*****************************/
     /**************************************************************************/
 
     this.grimmjow = new Grimmjow('grimmjow/Grimmjow', 30);
-    // this.grimmjow.position.set(50, 0, 30);
-    // this.grimmjow.rotation.y = -Math.PI/2;
-    //this.add(this.grimmjow);
+    this.add(this.grimmjow);
 
     this.caja_grimmjow = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
     this.caja_grimmjow.add(this.grimmjow);
     this.add(this.caja_grimmjow);
+
     this.caja_grimmjow.position.set(50, 0, 30);
     this.caja_grimmjow.rotation.y = -Math.PI/2;
 
@@ -78,10 +77,10 @@ class MyScene extends Physijs.Scene {
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 10000);
 
     // Se coloca cerca del hombro del personaje principal
-    this.camera.position.set(this.caja_ichigo.position.x-10, this.caja_ichigo.position.y+7, this.caja_ichigo.position.z-30);
+    this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
 
     // Y mira más allá del personaje
-    var look = new THREE.Vector3(this.caja_ichigo.position.x, this.caja_ichigo.position.y+7, this.caja_ichigo.position.z);
+    var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
     this.camera.lookAt(look);
     this.add(this.camera);
   }
@@ -116,7 +115,7 @@ class MyScene extends Physijs.Scene {
       // En el contexto de una función   this   alude a la función
       this.lightIntensity = 0.5;
       this.axisOnOff = true;
-      this.vida_ichigo = that.ichigo.vida;
+      this.vida_ichigo = that.modelo_ichigo.vida;
     }
 
     // Se crea una sección para los controles de esta clase
@@ -130,7 +129,7 @@ class MyScene extends Physijs.Scene {
 
     var personajes = gui.addFolder('Personajes');
 
-    personajes.add(this.guiControls, 'vida_ichigo', 0, this.ichigo.vida, 1).listen().name('Kurosaki Ichigo: ');
+    personajes.add(this.guiControls, 'vida_ichigo', 0, this.modelo_ichigo.vida, 1).listen().name('Kurosaki Ichigo: ');
 
     // Para actualizar la barra de vida en la pantalla
     var update_gui = function() {
@@ -194,8 +193,8 @@ class MyScene extends Physijs.Scene {
 
   cameraUpdate(){
     // Actualizamos la posición cuando el personaje se mueve
-    this.camera.position.set(this.caja_ichigo.position.x-10, this.caja_ichigo.position.y+7, this.caja_ichigo.position.z-30);
-    var look = new THREE.Vector3(this.caja_ichigo.position.x, this.caja_ichigo.position.y+7, this.caja_ichigo.position.z);
+    this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
+    var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
 
     //this.camera.position.applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.4//));
     this.camera.lookAt(look);
@@ -231,13 +230,13 @@ class MyScene extends Physijs.Scene {
     // Se actualiza el resto del modelo
 
     this.alma.update();
-    var vida_restada = this.grimmjow.update(this.caja_ichigo.position);
+    var vida_restada = this.grimmjow.update(this.ichigo.position);
     //console.log(vida_restada);
 
-    this.ichigo.disminuirVida(vida_restada);
+    this.modelo_ichigo.disminuirVida(vida_restada);
     this.guiControls.vida_ichigo -= vida_restada;
 
-    if(!this.juego_fin && this.ichigo.vida <= 0){
+    if(!this.juego_fin && this.modelo_ichigo.vida <= 0){
       alert("¡Has perdido!");
       this.juego_fin = true;
     }
@@ -253,32 +252,32 @@ class MyScene extends Physijs.Scene {
   }
 
   // updateCajasFisicas(){
-  //   this.caja_ichigo.position.set(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
+  //   this.ichigo.position.set(this.modelo_ichigo.position.x, this.modelo_ichigo.position.y+7, this.modelo_ichigo.position.z);
   // }
 
   mover(event){
     // Tecla a: hacia la izquierda
     if(event.keyCode == "97"){
-      this.caja_ichigo.position.x += 0.25;
-      this.caja_ichigo.rotation.set(0, Math.PI/2, 0);
+      this.ichigo.position.x += 0.25;
+      this.ichigo.rotation.set(0, Math.PI/2, 0);
     }
 
     // Tecla w: hacia arriba
     else if(event.keyCode == "119"){
-      this.caja_ichigo.position.z += 0.25;
-      this.caja_ichigo.rotation.set(0, 0, 0);
+      this.ichigo.position.z += 0.25;
+      this.ichigo.rotation.set(0, 0, 0);
     }
 
     // Tecla d: hacia la derecha
     else if(event.keyCode == "100"){
-      this.caja_ichigo.position.x -= 0.25;
-      this.caja_ichigo.rotation.set(0, -Math.PI/2, 0);
+      this.ichigo.position.x -= 0.25;
+      this.ichigo.rotation.set(0, -Math.PI/2, 0);
     }
 
     // Tecla s: hacia abajo
     else if(event.keyCode == "115"){
-      this.caja_ichigo.position.z -= 0.25;
-      this.caja_ichigo.rotation.set(0, Math.PI, 0);
+      this.ichigo.position.z -= 0.25;
+      this.ichigo.rotation.set(0, Math.PI, 0);
     }
   }
 
@@ -286,17 +285,17 @@ class MyScene extends Physijs.Scene {
     // Ataque con click de ratón
     if(event.which == 1){
       if(this.avance){
-        this.ichigo.position.x += 1;
-        this.ichigo.position.z += 1;
+        this.modelo_ichigo.position.x += 1;
+        this.modelo_ichigo.position.z += 1;
       }
 
       else{
-        this.ichigo.position.x -= 1;
-        this.ichigo.position.z -= 1;
+        this.modelo_ichigo.position.x -= 1;
+        this.modelo_ichigo.position.z -= 1;
       }
 
-      this.ichigo.avance = !this.ichigo.avance;
-      var pos_ichigo = this.ichigo.position;
+      this.modelo_ichigo.avance = !this.modelo_ichigo.avance;
+      var pos_ichigo = this.modelo_ichigo.position;
       var pos_grimmjow = this.grimmjow.position;
 
       if(Math.abs(pos_grimmjow.x-pos_ichigo.x) <= 5.0 &&
