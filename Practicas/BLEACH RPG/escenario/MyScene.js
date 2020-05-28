@@ -23,7 +23,7 @@ class MyScene extends Physijs.Scene {
     geom_caja.translate(0, 3.5, 0);
 
     var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.35});
-    var mat_fis = Physijs.createMaterial(mat_invisible, 0.5, 0.5);
+    var mat_fis = Physijs.createMaterial(mat_invisible, 0, 0);
 
     this.ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
@@ -34,16 +34,16 @@ class MyScene extends Physijs.Scene {
     /**************************Personajes enemigos*****************************/
     /**************************************************************************/
 
-    this.grimmjow = new Grimmjow('grimmjow/Grimmjow', 30);
+    this.modelo_grimmjow = new Grimmjow('grimmjow/Grimmjow', 30);
+    this.add(this.modelo_grimmjow);
+
+    this.grimmjow = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
+
+    this.grimmjow.add(this.modelo_grimmjow);
     this.add(this.grimmjow);
 
-    this.caja_grimmjow = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
-
-    this.caja_grimmjow.add(this.grimmjow);
-    this.add(this.caja_grimmjow);
-
-    this.caja_grimmjow.position.set(50, 0, 30);
-    this.caja_grimmjow.rotation.y = -Math.PI/2;
+    this.grimmjow.position.set(50, 0, 30);
+    this.grimmjow.rotation.y = -Math.PI/2;
 
     this.alma = new Alma();
     this.alma.position.set(55, 0, 30);
@@ -51,13 +51,10 @@ class MyScene extends Physijs.Scene {
 
     this.juego_fin = false;
 
-    // this.aizen = new Aizen();
-    // this.aizen.position.z = 10;
-    // this.add(this.aizen);
-    //
-    // this.ulquiorra = new Ulquiorra();
-    // this.ulquiorra.position.x = -10;
-    // this.add(this.ulquiorra);
+    var param = this.grimmjow;
+    this.ichigo.addEventListener('collision', function(param){
+      console.log("colision");
+    });
 
     // Se añade a la gui los controles para manipular los elementos de esta clase
     this.gui = this.createGUI();
@@ -87,20 +84,22 @@ class MyScene extends Physijs.Scene {
 
   createGround() {
     // Vamos a crear un suelo físico
-
     var geometria = new THREE.BoxGeometry(110,0.2,110);
     var mat_transparente = new THREE.MeshNormalMaterial({opacity:0.0,transparent:true})
     var matf = Physijs.createMaterial(mat_transparente, 0.9, 0.3);
 
     // Ya se puede construir el Mesh físico
     var ground = new Physijs.BoxMesh(geometria, matf, 0);
+    var ceiling = new Physijs.BoxMesh(geometria, matf, 0);
 
     // Todas las figuras se crean centradas en el origen.
     // El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
     ground.position.y = -0.1;
+    ceiling.position.y = 7;
 
-    // Que no se nos olvide añadirlo a la escena, que en este caso es  this
+    // Que no se nos olvide añadirlo a la escena, que en este caso es this
     this.add(ground);
+    //this.add(ceiling);
   }
 
   createGUI() {
@@ -230,7 +229,7 @@ class MyScene extends Physijs.Scene {
     // Se actualiza el resto del modelo
 
     this.alma.update();
-    var vida_restada = this.grimmjow.update(this.ichigo.position);
+    var vida_restada = this.modelo_grimmjow.update(this.ichigo.position);
     //console.log(vida_restada);
 
     this.modelo_ichigo.disminuirVida(vida_restada);
@@ -241,7 +240,7 @@ class MyScene extends Physijs.Scene {
       this.juego_fin = true;
     }
 
-    else if(!this.juego_fin && this.grimmjow.vida <= 0){
+    else if(!this.juego_fin && this.modelo_grimmjow.vida <= 0){
       alert("¡ENHORABUENA! ¡Has ganado! Has recuperado tu alma");
       this.juego_fin = true;
     }
@@ -250,10 +249,6 @@ class MyScene extends Physijs.Scene {
     this.renderer.render (this, this.getCamera());
     //this.simulate();
   }
-
-  // updateCajasFisicas(){
-  //   this.ichigo.position.set(this.modelo_ichigo.position.x, this.modelo_ichigo.position.y+7, this.modelo_ichigo.position.z);
-  // }
 
   mover(event){
     // Tecla a: hacia la izquierda
@@ -285,17 +280,18 @@ class MyScene extends Physijs.Scene {
     // Ataque con click de ratón
     if(event.which == 1){
       if(this.avance){
-        this.modelo_ichigo.position.x += 1;
-        this.modelo_ichigo.position.z += 1;
+        this.ichigo.position.x += 1;
+        this.ichigo.position.z += 1;
       }
 
       else{
-        this.modelo_ichigo.position.x -= 1;
-        this.modelo_ichigo.position.z -= 1;
+        this.ichigo.position.x -= 1;
+        this.ichigo.position.z -= 1;
       }
 
       this.modelo_ichigo.avance = !this.modelo_ichigo.avance;
-      var pos_ichigo = this.modelo_ichigo.position;
+
+      var pos_ichigo = this.ichigo.position;
       var pos_grimmjow = this.grimmjow.position;
 
       if(Math.abs(pos_grimmjow.x-pos_ichigo.x) <= 5.0 &&
@@ -317,7 +313,7 @@ class MyScene extends Physijs.Scene {
               this.rotation.y = Math.PI/2;
           }
 
-          this.grimmjow.disminuirVida(5);
+          this.modelo_grimmjow.disminuirVida(5);
       }
     }
   }
