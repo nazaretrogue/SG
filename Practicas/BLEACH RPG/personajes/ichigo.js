@@ -4,8 +4,6 @@ class Ichigo extends Personaje {
   }
 
   update(event){
-    console.log(this.vida);TWEEN.update();
-
     // Tecla a: movimiento hacia la derecha
     if(event.keyCode == "97"){
       this.position.x += 0.25;

@@ -20,12 +20,18 @@ class MyScene extends Physijs.Scene {
     this.modelo_ichigo = new Ichigo('ichigo/Ichigo', 500);
 
     var geom_caja = new THREE.BoxGeometry(8, 7, 3);
-    geom_caja.translate(0, 3.5, 0);
+    geom_caja.translate(0, 0, 0);
 
     var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.35});
-    var mat_fis = Physijs.createMaterial(mat_invisible, 0, 0);
+    var mat_fis = Physijs.createMaterial(mat_invisible, 0.2, 0.2);
 
     this.ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
+
+    this.modelo_ichigo.position.y = -3.5;
+    this.ichigo.position.set(0, 3.5, 0);
+
+    this.ichigo.__dirtyPosition = true;
+    this.ichigo.__dirtyRotation = true;
 
     this.ichigo.add(this.modelo_ichigo);
     this.add(this.ichigo);
@@ -39,11 +45,12 @@ class MyScene extends Physijs.Scene {
 
     this.grimmjow = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
+    this.modelo_grimmjow.position.y = -3.5;
+    this.grimmjow.position.set(50, 3.5, 30);
+    this.grimmjow.rotation.y = -Math.PI/2;
+
     this.grimmjow.add(this.modelo_grimmjow);
     this.add(this.grimmjow);
-
-    this.grimmjow.position.set(50, 0, 30);
-    this.grimmjow.rotation.y = -Math.PI/2;
 
     this.alma = new Alma();
     this.alma.position.set(55, 0, 30);
@@ -90,16 +97,13 @@ class MyScene extends Physijs.Scene {
 
     // Ya se puede construir el Mesh físico
     var ground = new Physijs.BoxMesh(geometria, matf, 0);
-    var ceiling = new Physijs.BoxMesh(geometria, matf, 0);
 
     // Todas las figuras se crean centradas en el origen.
     // El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
     ground.position.y = -0.1;
-    ceiling.position.y = 7;
 
     // Que no se nos olvide añadirlo a la escena, que en este caso es this
     this.add(ground);
-    //this.add(ceiling);
   }
 
   createGUI() {
@@ -131,12 +135,12 @@ class MyScene extends Physijs.Scene {
     personajes.add(this.guiControls, 'vida_ichigo', 0, this.modelo_ichigo.vida, 1).listen().name('Kurosaki Ichigo: ');
 
     // Para actualizar la barra de vida en la pantalla
-    var update_gui = function() {
-      requestAnimationFrame(()=>this.update());
-      personajes.vida_ichigo = that.ichigo.vida;
-    };
-
-    update_gui();
+    // var update_gui = function() {
+    //   requestAnimationFrame(()=>this.update());
+    //   personajes.vida_ichigo = that.ichigo.vida;
+    // };
+    //
+    // update_gui();
 
     return gui;
   }
@@ -226,6 +230,11 @@ class MyScene extends Physijs.Scene {
     this.cameraUpdate();
     // this.updateCajasFisicas();
 
+    // https://stackoverflow.com/questions/34569703/raycaster-does-not-move-boxmesh-objects
+    // Hay que actualizar las flags para que se muevan los objetos
+    this.ichigo.__dirtyPosition = true;
+    this.ichigo.__dirtyRotation = true;
+
     // Se actualiza el resto del modelo
 
     this.alma.update();
@@ -247,7 +256,7 @@ class MyScene extends Physijs.Scene {
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
-    //this.simulate();
+    this.simulate();
   }
 
   mover(event){
