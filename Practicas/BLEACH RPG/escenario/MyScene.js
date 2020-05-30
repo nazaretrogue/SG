@@ -17,7 +17,7 @@ class MyScene extends Physijs.Scene {
     this.escenario = new Escenario();
     this.add(this.escenario);
 
-    this.modelo_ichigo = new Ichigo('ichigo/Ichigo', 500);
+    this.modelo_ichigo = new Ichigo('ichigo/Ichigo', 25);
 
     var geom_caja = new THREE.BoxGeometry(8, 7, 3);
     geom_caja.translate(0, 0, 0);
@@ -32,6 +32,7 @@ class MyScene extends Physijs.Scene {
 
     this.ichigo.__dirtyPosition = true;
     this.ichigo.__dirtyRotation = true;
+    this.ichigo.colisionable = true;
 
     this.ichigo.add(this.modelo_ichigo);
     this.add(this.ichigo);
@@ -49,18 +50,46 @@ class MyScene extends Physijs.Scene {
     this.grimmjow.position.set(50, 3.5, 30);
     this.grimmjow.rotation.y = -Math.PI/2;
 
+    this.grimmjow.colisionable = true;
+
     this.grimmjow.add(this.modelo_grimmjow);
     this.add(this.grimmjow);
+
+    /**************************************************************************/
+    /************************Otros objetos del juego***************************/
+    /**************************************************************************/
 
     this.alma = new Alma();
     this.alma.position.set(55, 0, 30);
     this.add(this.alma);
 
-    this.juego_fin = false;
+    this.juego_fin = false
 
-    var param = this.grimmjow;
-    this.ichigo.addEventListener('collision', function(param){
-      console.log("colision");
+    /**************************************************************************/
+    /*************************Gestión de colisiones****************************/
+    /**************************************************************************/
+
+    var enemigo = this.grimmjow;
+    var modelo_enemigo = this.modelo_grimmjow;
+    var tu = this.ichigo;
+    var modelo_tu = this.modelo_ichigo;
+
+    // Ichigo ataca
+    this.ichigo.addEventListener('collision',
+      function(enemigo){
+        if(Math.abs(enemigo.position.x-tu.position.x) <= 5.0 &&
+           Math.abs(enemigo.position.z-tu.position.z) <= 5.0){
+             modelo_enemigo.disminuirVida(2);
+             console.log(modelo_tu.vida);
+        }
+    });
+
+    //Grimmjow ataca
+    this.grimmjow.addEventListener('collision',
+      function(tu){
+        var damage = modelo_enemigo.atacaEnemigo(tu.position);
+        modelo_tu.disminuirVida(damage);
+        console.log(modelo_enemigo.vida);
     });
 
     // Se añade a la gui los controles para manipular los elementos de esta clase
@@ -238,11 +267,6 @@ class MyScene extends Physijs.Scene {
     // Se actualiza el resto del modelo
 
     this.alma.update();
-    var vida_restada = this.modelo_grimmjow.update(this.ichigo.position);
-    //console.log(vida_restada);
-
-    this.modelo_ichigo.disminuirVida(vida_restada);
-    this.guiControls.vida_ichigo -= vida_restada;
 
     if(!this.juego_fin && this.modelo_ichigo.vida <= 0){
       alert("¡Has perdido!");
@@ -284,48 +308,6 @@ class MyScene extends Physijs.Scene {
       this.ichigo.rotation.set(0, Math.PI, 0);
     }
   }
-
-  atacaEnemigo(event){
-    // Ataque con click de ratón
-    if(event.which == 1){
-      if(this.avance){
-        this.ichigo.position.x += 1;
-        this.ichigo.position.z += 1;
-      }
-
-      else{
-        this.ichigo.position.x -= 1;
-        this.ichigo.position.z -= 1;
-      }
-
-      this.modelo_ichigo.avance = !this.modelo_ichigo.avance;
-
-      var pos_ichigo = this.ichigo.position;
-      var pos_grimmjow = this.grimmjow.position;
-
-      if(Math.abs(pos_grimmjow.x-pos_ichigo.x) <= 5.0 &&
-         Math.abs(pos_enemigo.z-this.position.z) <= 5.0){
-
-          if(Math.abs(pos_enemigo.x-this.position.x) <= 3.0){
-            if(pos_enemigo.z < this.position.z)
-              this.rotation.y = Math.PI;
-
-            else
-              this.rotation.y = 0.0;
-          }
-
-          if(Math.abs(pos_enemigo.z-this.position.z) <= 3.0){
-            if(pos_enemigo.x < this.position.x)
-              this.rotation.y = -Math.PI/2;
-
-            else
-              this.rotation.y = Math.PI/2;
-          }
-
-          this.modelo_grimmjow.disminuirVida(5);
-      }
-    }
-  }
 }
 
 /// La función   main
@@ -337,7 +319,6 @@ $(function() {
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener("resize", ()=>scene.onWindowResize());
   window.addEventListener('keypress', (event)=>scene.mover(event));
-  window.addEventListener('mousedown', (event)=>scene.atacaEnemigo(event));
 
   // Que no se nos olvide, la primera visualización.
   scene.update();
