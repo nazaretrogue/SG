@@ -17,13 +17,17 @@ class MyScene extends Physijs.Scene {
     this.escenario = new Escenario();
     this.add(this.escenario);
 
+    /**************************************************************************/
+    /************************Personaje protagonista****************************/
+    /**************************************************************************/
+
     this.modelo_ichigo = new Ichigo('ichigo/Ichigo', 25);
 
     var geom_caja = new THREE.BoxGeometry(8, 7, 3);
     geom_caja.translate(0, 0, 0);
 
     var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.35});
-    var mat_fis = Physijs.createMaterial(mat_invisible, 0.2, 0.2);
+    var mat_fis = Physijs.createMaterial(mat_invisible, 1, 0);
 
     this.ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
@@ -35,7 +39,7 @@ class MyScene extends Physijs.Scene {
     this.ichigo.colisionable = true;
 
     this.ichigo.add(this.modelo_ichigo);
-    this.add(this.ichigo);
+    this.add(this.ichigo);console.log(this.modelo_ichigo.toString());
 
     /**************************************************************************/
     /**************************Personajes enemigos*****************************/
@@ -47,7 +51,7 @@ class MyScene extends Physijs.Scene {
     this.grimmjow = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
     this.modelo_grimmjow.position.y = -3.5;
-    this.grimmjow.position.set(50, 3.5, 30);
+    this.grimmjow.position.set(30, 3.5, 30);
     this.grimmjow.rotation.y = -Math.PI/2;
 
     this.grimmjow.colisionable = true;
@@ -60,7 +64,7 @@ class MyScene extends Physijs.Scene {
     /**************************************************************************/
 
     this.alma = new Alma();
-    this.alma.position.set(55, 0, 30);
+    this.alma.position.set(35, 0, 30);
     this.add(this.alma);
 
     this.juego_fin = false
@@ -74,22 +78,16 @@ class MyScene extends Physijs.Scene {
     var tu = this.ichigo;
     var modelo_tu = this.modelo_ichigo;
 
-    // Ichigo ataca
-    this.ichigo.addEventListener('collision',
-      function(enemigo){
-        if(Math.abs(enemigo.position.x-tu.position.x) <= 5.0 &&
-           Math.abs(enemigo.position.z-tu.position.z) <= 5.0){
-             modelo_enemigo.disminuirVida(2);
-             console.log(modelo_tu.vida);
-        }
-    });
-
-    //Grimmjow ataca
+    // Grimmjow ataca
     this.grimmjow.addEventListener('collision',
       function(tu){
-        var damage = modelo_enemigo.atacaEnemigo(tu.position);
-        modelo_tu.disminuirVida(damage);
-        console.log(modelo_enemigo.vida);
+        if(Math.abs(enemigo.position.x-tu.position.x) <= 5.0 &&
+           Math.abs(enemigo.position.z-tu.position.z) <= 5.0){
+             var damage = modelo_enemigo.atacaEnemigo(tu.position, enemigo.position);
+             modelo_enemigo.disminuirVida(damage);
+             damage = modelo_enemigo.atacaEnemigo(enemigo.position, tu.position);
+             modelo_tu.disminuirVida(damage);
+        }
     });
 
     // Se añade a la gui los controles para manipular los elementos de esta clase
@@ -120,18 +118,37 @@ class MyScene extends Physijs.Scene {
 
   createGround() {
     // Vamos a crear un suelo físico
-    var geometria = new THREE.BoxGeometry(110,0.2,110);
-    var mat_transparente = new THREE.MeshNormalMaterial({opacity:0.0,transparent:true})
+    var geom_suelo = new THREE.BoxGeometry(110,0.2,110);
+    var geom_pared = new THREE.BoxGeometry(110, 30, 0.2);
+    var mat_transparente = new THREE.MeshNormalMaterial({opacity:0.0, transparent:true})
     var matf = Physijs.createMaterial(mat_transparente, 0.9, 0.3);
 
     // Ya se puede construir el Mesh físico
-    var ground = new Physijs.BoxMesh(geometria, matf, 0);
+    var ground = new Physijs.BoxMesh(geom_suelo, matf, 0);
+    var wall1 = new Physijs.BoxMesh(geom_pared, matf, 1);
+    var wall2 = new Physijs.BoxMesh(geom_pared, matf, 1);
+    var wall3 = new Physijs.BoxMesh(geom_pared, matf, 1);
+    var wall4 = new Physijs.BoxMesh(geom_pared, matf, 1);
 
     // Todas las figuras se crean centradas en el origen.
     // El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
     ground.position.y = -0.1;
+    wall1.position.set(0, 15, 55);
+    wall2.position.set(0, 15, -55);
+    wall1.colisionable = true;
 
-    // Que no se nos olvide añadirlo a la escena, que en este caso es this
+    wall3.position.set(55, 15, 0);
+    wall3.rotation.y = Math.PI/2;
+
+    wall4.position.set(-55, 15, 0);
+    wall4.rotation.y = Math.PI/2;
+
+    ground.add(wall1);
+    ground.add(wall2);
+    ground.add(wall3);
+    ground.add(wall4);
+
+    // Añadimos el suelo con las paredes
     this.add(ground);
   }
 
@@ -148,6 +165,7 @@ class MyScene extends Physijs.Scene {
       this.lightIntensity = 0.5;
       this.axisOnOff = true;
       this.vida_ichigo = that.modelo_ichigo.vida;
+      this.vida_grimmjow = that.modelo_grimmjow.vida;
     }
 
     // Se crea una sección para los controles de esta clase
@@ -161,15 +179,8 @@ class MyScene extends Physijs.Scene {
 
     var personajes = gui.addFolder('Personajes');
 
+    personajes.add(this.guiControls, 'vida_grimmjow', 0, this.modelo_grimmjow.vida, 1).listen().name('Grimmjow Jaegerjaquez: ');
     personajes.add(this.guiControls, 'vida_ichigo', 0, this.modelo_ichigo.vida, 1).listen().name('Kurosaki Ichigo: ');
-
-    // Para actualizar la barra de vida en la pantalla
-    // var update_gui = function() {
-    //   requestAnimationFrame(()=>this.update());
-    //   personajes.vida_ichigo = that.ichigo.vida;
-    // };
-    //
-    // update_gui();
 
     return gui;
   }
@@ -248,6 +259,9 @@ class MyScene extends Physijs.Scene {
     // Si no existiera esta línea,  update()  se ejecutaría solo la primera vez.
     requestAnimationFrame(()=>this.update())
 
+    this.guiControls.vida_ichigo = this.modelo_ichigo.vida;
+    this.guiControls.vida_grimmjow = this.modelo_grimmjow.vida;
+
     // Se actualizan los elementos de la escena para cada frame
     // Se actualiza la intensidad de la luz con lo que haya indicado el usuario en la gui
     this.spotLight.intensity = this.guiControls.lightIntensity;
@@ -257,7 +271,6 @@ class MyScene extends Physijs.Scene {
 
     // Se actualiza la posición de la cámara según su controlador
     this.cameraUpdate();
-    // this.updateCajasFisicas();
 
     // https://stackoverflow.com/questions/34569703/raycaster-does-not-move-boxmesh-objects
     // Hay que actualizar las flags para que se muevan los objetos
@@ -265,7 +278,6 @@ class MyScene extends Physijs.Scene {
     this.ichigo.__dirtyRotation = true;
 
     // Se actualiza el resto del modelo
-
     this.alma.update();
 
     if(!this.juego_fin && this.modelo_ichigo.vida <= 0){

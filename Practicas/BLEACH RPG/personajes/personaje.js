@@ -3,7 +3,7 @@ class Personaje extends THREE.Object3D{
     super();
 
     this.vida = puntos_vida;
-    
+
     var cad_materiales = '../models/'+archivo+'.mtl';
     var cad_modelo = '../models/'+archivo+'.obj'
 
@@ -42,5 +42,35 @@ class Personaje extends THREE.Object3D{
 
       this.position.y = 1;
     }
+  }
+
+  atacaEnemigo(pos, pos_enemigo){
+    var damage = 0;
+
+    console.log(Math.abs(pos_enemigo.x-pos.x));
+
+    if(Math.abs(pos_enemigo.x-pos.x) <= 5.0 &&
+       Math.abs(pos_enemigo.z-pos.z) <= 5.0){
+
+        if(Math.abs(pos_enemigo.x-pos.x) <= 3.0){
+          if(pos_enemigo.z < pos.z)
+            this.rotation.y = Math.PI;
+
+          else
+            this.rotation.y = 0.0;
+        }
+
+        if(Math.abs(pos_enemigo.z-pos.z) <= 3.0){
+          if(pos_enemigo.x < pos.x)
+            this.rotation.y = -Math.PI/2;
+
+          else
+            this.rotation.y = Math.PI/2;
+        }
+
+         damage = Math.floor(Math.random()*(+4 - +1))+1;
+    }
+
+    return damage;
   }
 }
