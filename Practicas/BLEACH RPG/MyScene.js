@@ -1,5 +1,5 @@
 class MyScene extends Physijs.Scene {
-  constructor(myCanvas) {
+  constructor(my_canvas) {
     // Scripts para el motor de físicas
     Physijs.scripts.worker = '../libs/physijs_worker.js';
     Physijs.scripts.ammo = '../libs/ammo.js';
@@ -7,7 +7,7 @@ class MyScene extends Physijs.Scene {
     super();
 
     // Creamos el visualizador con el lienzo en el que se mostrarán las escenas renderizadas
-    this.renderer = this.createRenderer(myCanvas);
+    this.renderer = this.createRenderer(my_canvas);
 
     // Establecemos una gravedad de 10 (aproximadamente la gravedad real)
     this.setGravity(new THREE.Vector3(0, -10, 0));
@@ -25,7 +25,7 @@ class MyScene extends Physijs.Scene {
     var geom_caja = new THREE.BoxGeometry(8, 7, 3);
     geom_caja.translate(0, 0, 0);
 
-    var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.35});
+    var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.0});
     var mat_fis = Physijs.createMaterial(mat_invisible, 1, 0);
 
     // Creamos una caja física transparente para simular un modelo físico
@@ -182,6 +182,7 @@ class MyScene extends Physijs.Scene {
 
     personajes.add(this.guiControls, 'vida_grimmjow', 0, this.modelo_grimmjow.vida, 1).listen().name('Grimmjow Jaegerjaquez: ');
     personajes.add(this.guiControls, 'vida_ichigo', 0, this.modelo_ichigo.vida, 1).listen().name('Kurosaki Ichigo: ');
+    personajes.open();
 
     return gui;
   }
@@ -202,7 +203,7 @@ class MyScene extends Physijs.Scene {
     this.add(this.spotLight);
   }
 
-  createRenderer(myCanvas) {
+  createRenderer(my_canvas) {
     // Se instancia un Renderer WebGL
     var renderer = new THREE.WebGLRenderer();
 
@@ -214,7 +215,7 @@ class MyScene extends Physijs.Scene {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // La visualización se muestra en el lienzo recibido
-    $(myCanvas).append(renderer.domElement);
+    $(my_canvas).append(renderer.domElement);
 
     return renderer;
   }
@@ -293,6 +294,10 @@ class MyScene extends Physijs.Scene {
   }
 
   mover(event){
+    // Click de ratón
+    if(event.which == 1)
+      this.ichigo.position.x += 0.5;
+
     // Tecla a: hacia la izquierda
     if(event.keyCode == "97"){
       this.ichigo.position.x += 0.25;
@@ -329,6 +334,7 @@ $(function(){
   // pulsación de teclas para el movimiento
   window.addEventListener("resize", ()=>scene.onWindowResize());
   window.addEventListener('keypress', (event)=>scene.mover(event));
+  window.addEventListener('mousedown', (event)=>scene.mover(event));
 
   // La primera visualización
   scene.update();
