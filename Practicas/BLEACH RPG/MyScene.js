@@ -1,19 +1,18 @@
 class MyScene extends Physijs.Scene {
   constructor(myCanvas) {
+    // Scripts para el motor de físicas
     Physijs.scripts.worker = '../libs/physijs_worker.js';
     Physijs.scripts.ammo = '../libs/ammo.js';
 
     super();
 
-    // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
+    // Creamos el visualizador con el lienzo en el que se mostrarán las escenas renderizadas
     this.renderer = this.createRenderer(myCanvas);
+
+    // Establecemos una gravedad de 10 (aproximadamente la gravedad real)
     this.setGravity(new THREE.Vector3(0, -10, 0));
 
-    // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
-    this.axis = new THREE.AxesHelper(5);
-    this.add(this.axis);
-
-    // Modelos
+    // Modelos. Primero cargamos el escenario
     this.escenario = new Escenario();
     this.add(this.escenario);
 
@@ -29,17 +28,20 @@ class MyScene extends Physijs.Scene {
     var mat_invisible = new THREE.MeshBasicMaterial({transparent:true, opacity:0.35});
     var mat_fis = Physijs.createMaterial(mat_invisible, 1, 0);
 
+    // Creamos una caja física transparente para simular un modelo físico
     this.ichigo = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
     this.modelo_ichigo.position.y = -3.5;
     this.ichigo.position.set(0, 3.5, 0);
 
+    // Debemos activar las flags de Physijs para los objetos para poder moverlos y rotarlos y que sean colisionables
     this.ichigo.__dirtyPosition = true;
     this.ichigo.__dirtyRotation = true;
     this.ichigo.colisionable = true;
 
+    // Añadimos el modelo a la caja y la caja a la escena
     this.ichigo.add(this.modelo_ichigo);
-    this.add(this.ichigo);console.log(this.modelo_ichigo.toString());
+    this.add(this.ichigo);
 
     /**************************************************************************/
     /**************************Personajes enemigos*****************************/
@@ -63,11 +65,12 @@ class MyScene extends Physijs.Scene {
     /************************Otros objetos del juego***************************/
     /**************************************************************************/
 
+    // Añadimos el alma: es el objetivo del protagonista
     this.alma = new Alma();
     this.alma.position.set(35, 0, 30);
     this.add(this.alma);
 
-    this.juego_fin = false
+    this.fin_juego = false
 
     /**************************************************************************/
     /*************************Gestión de colisiones****************************/
@@ -81,8 +84,10 @@ class MyScene extends Physijs.Scene {
     // Grimmjow ataca
     this.grimmjow.addEventListener('collision',
       function(tu){
+        // Comprobamos si los personajes están en rango para atacarse
         if(Math.abs(enemigo.position.x-tu.position.x) <= 5.0 &&
            Math.abs(enemigo.position.z-tu.position.z) <= 5.0){
+             // Tanto el protagonista (tú) como el enemigo se hacen daño mutuo en cada colisión
              var damage = modelo_enemigo.atacaEnemigo(tu.position, enemigo.position);
              modelo_enemigo.disminuirVida(damage);
              damage = modelo_enemigo.atacaEnemigo(enemigo.position, tu.position);
@@ -90,21 +95,20 @@ class MyScene extends Physijs.Scene {
         }
     });
 
-    // Se añade a la gui los controles para manipular los elementos de esta clase
+    // La GUI contará con la gestión de luces y los contadores de vida de los personajes
     this.gui = this.createGUI();
 
     // Elementos necesarios en la escena
     this.createLights();
     this.createGround();
 
-    // Creamos la cámara al final porque su posición depende del personaje
+    // Creamos la cámara al final porque su posición depende del protagonista
     this.createCamera();
   }
 
   createCamera() {
     // Vamos a crear una cámara en tercera persona que siga al personaje. Indicamos
-    // El ángulo del campo de visión en grados sexagesimales, el ratio ancho/alto
-    // y los planos de recorte cercano y lejano
+    // el ángulo del campo de visión, el ratio ancho/alto y los planos de recorte cercano y lejano
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 10000);
 
     // Se coloca cerca del hombro del personaje principal
@@ -117,21 +121,20 @@ class MyScene extends Physijs.Scene {
   }
 
   createGround() {
-    // Vamos a crear un suelo físico
+    // Vamos a crear un suelo y paredes físicas para controlar que los personajes no salgan del mapa
     var geom_suelo = new THREE.BoxGeometry(110,0.2,110);
     var geom_pared = new THREE.BoxGeometry(110, 30, 0.2);
     var mat_transparente = new THREE.MeshNormalMaterial({opacity:0.0, transparent:true})
     var matf = Physijs.createMaterial(mat_transparente, 0.9, 0.3);
 
-    // Ya se puede construir el Mesh físico
+    // Construimos cada parte por separado
     var ground = new Physijs.BoxMesh(geom_suelo, matf, 0);
     var wall1 = new Physijs.BoxMesh(geom_pared, matf, 1);
     var wall2 = new Physijs.BoxMesh(geom_pared, matf, 1);
     var wall3 = new Physijs.BoxMesh(geom_pared, matf, 1);
     var wall4 = new Physijs.BoxMesh(geom_pared, matf, 1);
 
-    // Todas las figuras se crean centradas en el origen.
-    // El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
+    // Posicionamos las paredes donde corresponde
     ground.position.y = -0.1;
     wall1.position.set(0, 15, 55);
     wall2.position.set(0, 15, -55);
@@ -143,12 +146,13 @@ class MyScene extends Physijs.Scene {
     wall4.position.set(-55, 15, 0);
     wall4.rotation.y = Math.PI/2;
 
+    // Unimos las paredes al suelo para crear una única figura
     ground.add(wall1);
     ground.add(wall2);
     ground.add(wall3);
     ground.add(wall4);
 
-    // Añadimos el suelo con las paredes
+    // Añadimos el suelo con las paredes a la escena
     this.add(ground);
   }
 
@@ -157,26 +161,23 @@ class MyScene extends Physijs.Scene {
     var gui = new dat.GUI();
     var that = this;
 
-    // La escena le va a añadir sus propios controles.
-    // Se definen mediante una   new function()
-    // En este caso la intensidad de la luz y si se muestran o no los ejes
     this.guiControls = new function() {
-      // En el contexto de una función   this   alude a la función
+      // Solo se podrán controlar las luces
       this.lightIntensity = 0.5;
-      this.axisOnOff = true;
+
+      // La barra de vida del personaje será meramente informativa de la vida
+      // restante de cada personaje en cada momento
       this.vida_ichigo = that.modelo_ichigo.vida;
       this.vida_grimmjow = that.modelo_grimmjow.vida;
     }
 
     // Se crea una sección para los controles de esta clase
-    var folder = gui.addFolder('Luz y Ejes');
+    var folder = gui.addFolder('Luces');
 
     // Se le añade un control para la intensidad de la luz
     folder.add(this.guiControls, 'lightIntensity', 0, 1, 0.1).name('Intensidad de la Luz : ');
 
-    // Y otro para mostrar u ocultar los ejes
-    folder.add(this.guiControls, 'axisOnOff').name('Mostrar ejes : ');
-
+    // Sección para la barra de vida de los personajes
     var personajes = gui.addFolder('Personajes');
 
     personajes.add(this.guiControls, 'vida_grimmjow', 0, this.modelo_grimmjow.vida, 1).listen().name('Grimmjow Jaegerjaquez: ');
@@ -186,12 +187,11 @@ class MyScene extends Physijs.Scene {
   }
 
   createLights() {
-    // Se crea una luz ambiental, evita que se vean complentamente negras las zonas donde no incide de manera directa una fuente de luz
-    // La luz ambiental solo tiene un color y una intensidad
-    // Se declara como   var   y va a ser una variable local a este método
-    //    se hace así puesto que no va a ser accedida desde otros métodos
+    // Se crea una luz ambiental, evita que se vean complentamente negras las
+    // zonas donde no incide de manera directa una fuente de luz
     var ambientLight = new THREE.AmbientLight(0xccddee, 0.35);
-    // La añadimos a la escena
+
+    // Añadimos la luz ambiental a la escena
     this.add(ambientLight);
 
     // La luz focal de la escena no es blanca, sino violeta muy claro, ya que
@@ -203,12 +203,11 @@ class MyScene extends Physijs.Scene {
   }
 
   createRenderer(myCanvas) {
-    // Se recibe el lienzo sobre el que se van a hacer los renderizados. Un div definido en el html.
-
-    // Se instancia un Renderer   WebGL
+    // Se instancia un Renderer WebGL
     var renderer = new THREE.WebGLRenderer();
 
-    // Se establece un color de fondo en las imágenes que genera el render
+    // Se establece un color de fondo en las imágenes que genera el render. El
+    // fondo es negro ya que están en una cueva rocosa
     renderer.setClearColor(new THREE.Color(0x000000), 1.0);
 
     // Se establece el tamaño, se aprovecha la totalidad de la ventana del navegador
@@ -220,9 +219,7 @@ class MyScene extends Physijs.Scene {
     return renderer;
   }
 
-  getCamera() {
-    // En principio se devuelve la única cámara que tenemos
-    // Si hubiera varias cámaras, este método decidiría qué cámara devuelve cada vez que es consultado
+  getCamera(){
     return this.camera;
   }
 
@@ -230,6 +227,7 @@ class MyScene extends Physijs.Scene {
     // Cada vez que el usuario modifica el tamaño de la ventana desde el gestor de ventanas de
     // su sistema operativo hay que actualizar el ratio de aspecto de la cámara
     this.camera.aspect = ratio;
+
     // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
     this.camera.updateProjectionMatrix();
   }
@@ -239,7 +237,7 @@ class MyScene extends Physijs.Scene {
     this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
     var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
 
-    //this.camera.position.applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.4//));
+    // La cámara siempre mira más allá
     this.camera.lookAt(look);
   }
 
@@ -253,45 +251,44 @@ class MyScene extends Physijs.Scene {
   }
 
   update() {
-    // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo.
-
-    // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
-    // Si no existiera esta línea,  update()  se ejecutaría solo la primera vez.
+    // Este método debe ser llamado cada vez que queramos visualizar la escena de nuevo
     requestAnimationFrame(()=>this.update())
 
+    // Se actualizan las barras de vida de cada personaje
     this.guiControls.vida_ichigo = this.modelo_ichigo.vida;
     this.guiControls.vida_grimmjow = this.modelo_grimmjow.vida;
 
     // Se actualizan los elementos de la escena para cada frame
-    // Se actualiza la intensidad de la luz con lo que haya indicado el usuario en la gui
+    // Se actualiza la intensidad de la luz según la gui
     this.spotLight.intensity = this.guiControls.lightIntensity;
 
-    // Se muestran o no los ejes según lo que idique la GUI
-    this.axis.visible = this.guiControls.axisOnOff;
-
-    // Se actualiza la posición de la cámara según su controlador
+    // Se actualiza la posición de la cámara según el movimiento del personaje
     this.cameraUpdate();
 
     // https://stackoverflow.com/questions/34569703/raycaster-does-not-move-boxmesh-objects
-    // Hay que actualizar las flags para que se muevan los objetos
+    // Hay que actualizar las flags para que se muevan los objetos porque se
+    // ponen a false en cada actualización
     this.ichigo.__dirtyPosition = true;
     this.ichigo.__dirtyRotation = true;
 
-    // Se actualiza el resto del modelo
+    // Se actualiza el alma para que rote sobre sí misma
     this.alma.update();
 
-    if(!this.juego_fin && this.modelo_ichigo.vida <= 0){
+    // Si alguno de los personajes muere, acaba el juego
+    if(!this.fin_juego && this.modelo_ichigo.vida <= 0){
       alert("¡Has perdido!");
-      this.juego_fin = true;
+      this.fin_juego = true;
     }
 
-    else if(!this.juego_fin && this.modelo_grimmjow.vida <= 0){
+    else if(!this.fin_juego && this.modelo_grimmjow.vida <= 0){
       alert("¡ENHORABUENA! ¡Has ganado! Has recuperado tu alma");
-      this.juego_fin = true;
+      this.fin_juego = true;
     }
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
-    this.renderer.render (this, this.getCamera());
+    this.renderer.render(this, this.getCamera());
+
+    // Simulación del escenario con motores de física
     this.simulate();
   }
 
@@ -322,16 +319,17 @@ class MyScene extends Physijs.Scene {
   }
 }
 
-/// La función   main
-$(function() {
+// La función main
+$(function(){
 
   // Se instancia la escena pasándole el  div  que se ha creado en el html para visualizar
   var scene = new MyScene("#WebGL-output");
 
-  // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
+  // Se añaden los listener de la aplicación: cambio de tamaño de ventana y
+  // pulsación de teclas para el movimiento
   window.addEventListener("resize", ()=>scene.onWindowResize());
   window.addEventListener('keypress', (event)=>scene.mover(event));
 
-  // Que no se nos olvide, la primera visualización.
+  // La primera visualización
   scene.update();
 });
