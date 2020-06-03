@@ -35,16 +35,16 @@ class Personaje extends THREE.Object3D{
 
     // Si la vida llega a 0 el personaje cae al suelo con una orientación que depende de hacia donde mire
     if(this.vida <= 0){
-      if(this.rotation.y == Math.PI/2)
+      if(Math.abs(this.rotation.y-Math.PI/2) <= 2.0)
         this.rotation.set(0, 0, Math.PI/2);
 
-      else if(this.rotation.y == 0)
+      else if(Math.abs(this.rotation.y-0) <= 2.0)
         this.rotation.set(-Math.PI/2, this.rotation.y, 0);
 
-      else if(this.rotation.y == -Math.PI/2)
+      else if(Math.abs(this.rotation.y+Math.PI/2) <= 2.0)
         this.rotation.set(0, 0, -Math.PI/2);
 
-      else if(this.rotation.y == Math.PI)
+      else if(Math.abs(this.rotation.y-Math.PI) <= 2.0)
         this.rotation.set(Math.PI/2, this.rotation.y, 0);
 
       // Debemos bajar al personaje al -2.5 porque al estar dentro de las cajas quedan flotando
@@ -57,28 +57,9 @@ class Personaje extends THREE.Object3D{
 
     // Si el enemigo está en el rango de ataque
     if(Math.abs(pos_enemigo.x-pos.x) <= 5.0 &&
-       Math.abs(pos_enemigo.z-pos.z) <= 5.0){
-
-        // Los personajes se giran hacia donde esté el enemigo para enfrentarlo
-        if(Math.abs(pos_enemigo.x-pos.x) <= 3.0){
-          if(pos_enemigo.z < pos.z)
-            this.rotation.y = Math.PI;
-
-          else
-            this.rotation.y = 0.0;
-        }
-
-        if(Math.abs(pos_enemigo.z-pos.z) <= 3.0){
-          if(pos_enemigo.x < pos.x)
-            this.rotation.y = -Math.PI/2;
-
-          else
-            this.rotation.y = Math.PI/2;
-        }
-
+       Math.abs(pos_enemigo.z-pos.z) <= 5.0)
         // El daño hecho es un número aleatorio entre 1 y 3 ambos inclusive
         damage = Math.floor(Math.random()*(+4 - +1))+1;
-    }
 
     return damage;
   }

@@ -66,7 +66,7 @@ class MyScene extends Physijs.Scene {
 
     // Añadimos el alma: es el objetivo del protagonista
     this.alma = new Alma();
-    this.alma.position.set(35, 0, 30);
+    this.alma.position.set(50, 0, 50);
     this.add(this.alma);
 
     this.fin_juego = false
@@ -87,9 +87,9 @@ class MyScene extends Physijs.Scene {
         if(Math.abs(enemigo.position.x-tu.position.x) <= 5.0 &&
            Math.abs(enemigo.position.z-tu.position.z) <= 5.0){
              // Tanto el protagonista (tú) como el enemigo se hacen daño mutuo en cada colisión
-             var damage = modelo_enemigo.atacaEnemigo(tu.position, enemigo.position);
+             var damage = modelo_tu.atacaEnemigo(tu.position, enemigo.position);
              modelo_enemigo.disminuirVida(damage);
-             damage = modelo_enemigo.atacaEnemigo(enemigo.position, tu.position);
+             damage = modelo_enemigo.atacaEnemigo(enemigo.position, tu.position, tu.rotation.y);
              modelo_tu.disminuirVida(damage);
         }
     });
@@ -265,7 +265,6 @@ class MyScene extends Physijs.Scene {
     // Se actualiza la posición de la cámara según el movimiento del personaje
     this.cameraUpdate();
 
-    // https://stackoverflow.com/questions/34569703/raycaster-does-not-move-boxmesh-objects
     // Hay que actualizar las flags para que se muevan los objetos porque se
     // ponen a false en cada actualización
     this.ichigo.__dirtyPosition = true;
