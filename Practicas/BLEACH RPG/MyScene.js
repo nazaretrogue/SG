@@ -47,7 +47,7 @@ class MyScene extends Physijs.Scene {
     /**************************Personajes enemigos*****************************/
     /**************************************************************************/
 
-    this.modelo_grimmjow = new Grimmjow('grimmjow/Grimmjow', 3);
+    this.modelo_grimmjow = new Grimmjow('grimmjow/Grimmjow', 30);
 
     this.grimmjow = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
