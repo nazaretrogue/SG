@@ -113,7 +113,7 @@ Para explicar lo que debe hacer la aplicación se han definido unos requisitos f
 	\item RF4. Para poder conseguir el objeto, el personaje podrá atacar al enemigo mediante clicks de ratón.
 	\item RF5. Cada personaje tendrá una vida limitada y cuando ésta llegue a 0, el personaje habrá muerto.
 	\item RF6. Habrá un display con la vida de cada personaje que se actualizará cada vez que un personaje ataque al otro.
-	\item RF7. Cuando el personaje principal gane o pierda, se alertará desde el navegador con el resultado de la batalla.
+	\item RF7. Cuando el personaje principal gane o pierda, se alertará desde el navegador con el resultado de la batalla. Además se escuchará una voz en off sentenciando el resultado de la pelea.
 \end{itemize}
 
 \section{Codificación}
@@ -157,7 +157,7 @@ Dejando el escenario con todas las cajas transparentes, la apariencia de la apli
 	\includegraphics[scale=0.37]{img/inicio.png}
 \end{figure}
 
-Los ataques de los personajes se llevan a cabo cuando ambos están en un rango de 5 unidades y se gestionan mediante colisiones. Cuando los personajes chocan se hacen daño mutuamente, un daño aleatorio entre 1 y 3 (ambos incluidos). Por tanto, cuando el personaje principal ataca, también recibirá un daño de vuelta.
+Los ataques de los personajes se llevan a cabo cuando ambos están en un rango de 5 unidades y se gestionan mediante colisiones. Cuando los personajes chocan se hacen daño mutuamente, un daño aleatorio entre 1 y 3 (ambos incluidos). Por tanto, cuando el personaje principal ataca, también recibirá un daño de vuelta. Cada vez que se atacan el uno al otro se escucha el sonido de una espada apuñalando al enemigo.
 
 \section{Control de la vida}
 
@@ -168,7 +168,14 @@ Para poder ver la vida del personaje se ha utilizado la propia interfaz de usuar
 	\includegraphics[scale=0.5]{img/barravida.png}
 \end{figure}
 
-El enemigo, Grimmjow, tiene un handicap ya que tiene 5 puntos de vida más que el protagonista. Esto está hecho para añadir una cierta dificultad en ganarle y como parte de la historia, ya que el alma del protagonista ha sido robada y eso le ha quitado fuerza vital (he intentado resemblar lo que ocurren en la serie en la que me he basado para hacer este juego).
+El enemigo, Grimmjow, tiene un handicap ya que tiene 5 puntos de vida más que el protagonista. Esto está hecho para añadir una cierta dificultad en ganarle y como parte de la historia, ya que el alma del protagonista ha sido robada y eso le ha quitado fuerza vital (he intentado resemblar lo que ocurren en la serie en la que me he basado para hacer este juego).\\
+
+Tras la batalla, se escuchará una frase:
+
+\begin{itemize}
+	\item Si el protagonista pierde, una voz dirá: \textit{Mission failed. We'll get 'em next time}.
+	\item Si el protagonista gana, la voz dirá: \textit{You win}.
+\end{itemize}
 
 \section{Demo}
 

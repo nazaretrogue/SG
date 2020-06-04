@@ -47,7 +47,7 @@ class MyScene extends Physijs.Scene {
     /**************************Personajes enemigos*****************************/
     /**************************************************************************/
 
-    this.modelo_grimmjow = new Grimmjow('grimmjow/Grimmjow', 30);
+    this.modelo_grimmjow = new Grimmjow('grimmjow/Grimmjow', 3);
 
     this.grimmjow = new Physijs.BoxMesh(geom_caja, mat_fis, 1.0);
 
@@ -80,6 +80,11 @@ class MyScene extends Physijs.Scene {
     var tu = this.ichigo;
     var modelo_tu = this.modelo_ichigo;
 
+    this.listener_sonido = new THREE.AudioListener();
+    this.add(this.listener_sonido);
+
+    var sonido_espada = new THREE.Audio(this.listener_sonido);
+
     // Grimmjow ataca
     this.grimmjow.addEventListener('collision',
       function(tu){
@@ -91,6 +96,14 @@ class MyScene extends Physijs.Scene {
              modelo_enemigo.disminuirVida(damage);
              damage = modelo_enemigo.atacaEnemigo(enemigo.position, tu.position, tu.rotation.y);
              modelo_tu.disminuirVida(damage);
+
+             var audio_loader = new THREE.AudioLoader();
+             audio_loader.load("sounds/sword.mp3", function(buffer){
+               sonido_espada.setBuffer(buffer);
+               sonido_espada.setVolume(0.2);
+               sonido_espada.play();
+             });
+
         }
     });
 
@@ -274,14 +287,28 @@ class MyScene extends Physijs.Scene {
     this.alma.update();
 
     // Si alguno de los personajes muere, acaba el juego
-    if(!this.fin_juego && this.modelo_ichigo.vida <= 0){
-      alert("¡Has perdido!");
-      this.fin_juego = true;
-    }
+    if(!this.fin_juego){
+      var sonido_victoria = new THREE.Audio(this.listener_sonido);
+      var audio = null;
 
-    else if(!this.fin_juego && this.modelo_grimmjow.vida <= 0){
-      alert("¡ENHORABUENA! ¡Has ganado! Has recuperado tu alma");
-      this.fin_juego = true;
+      if(this.modelo_ichigo.vida <= 0){
+        alert("¡Has perdido!");
+        this.fin_juego = true;
+        audio = "sounds/lose.mp3";
+      }
+
+      else if(this.modelo_grimmjow.vida <= 0){
+        alert("¡ENHORABUENA! ¡Has ganado! Has recuperado tu alma");
+        this.fin_juego = true;
+        audio = "sounds/win.mp3";
+      }
+
+      var audio_loader = new THREE.AudioLoader();
+       audio_loader.load(audio, function(buffer){
+         sonido_victoria.setBuffer(buffer);
+         sonido_victoria.setVolume(0.2);
+         sonido_victoria.play();
+       });
     }
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
