@@ -136,6 +136,12 @@ Los modelos de los personajes han sido sacados de los siguientes enlaces:
 	\item \textbf{Grimmjow}: \color{blue}\url{https://www.models-resource.com/wii/bleachversuscrusade/model/48/}\color{black}.
 \end{itemize}
 
+\section{Cámara}
+
+La cámara es una cámara en tercera persona que sigue a nuestro protagonista. Es fija y no se puede mover, ya que la idea es que dé la sensación de que estamos viendo desde el hombro del personaje, como si fueramos un loro en el hombro de un pirata (de hecho, un poco por detrás y por encima, para que podamos ver también al propio personaje).\\
+
+La cámara siempre seguirá al personaje desde esta distancia fijada y aunque el personaje se gire, la cámara no lo hará.  
+
 \section{Simulación con físicas}
 
 Para poder gestionar algunos de los requisitos, como el ataque o la restricción de los personajes al área de lucha se ha utilizado el motor de físicas de las transparencias de clase, el motor \texttt{Physijs}.\\
@@ -145,7 +151,7 @@ Además, se ha creado una estructura que une un suelo con cuatro paredes para qu
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.27]{img/fisica.png}
+	\includegraphics[scale=0.23]{img/fisica.png}
 \end{figure}
 
 Por otro lado, el objeto que se ha de recuperar (el alma de nuestro personaje), es una malla de THREEjs simple, no es un objeto físico puesto que no es necesario que lo sea.\\
@@ -179,7 +185,7 @@ Tras la batalla, se escuchará una frase:
 
 \section{Demo}
 
-En este \texttt{.zip} se incluye una pequeña demo de 30 segundos para mostrar la muerte del enemigo, ya que es lo más complicado del juego. Que mate al personaje principal es más sencillo (este vídeo ha salido después de muchas grabaciones porque siempre era yo la que moría).
+En este \texttt{.zip} se incluye una pequeña demo de 40 segundos para mostrar la muerte del enemigo, ya que es lo más complicado del juego. Que sea el personaje principal quién muera es más sencillo (este vídeo ha salido después de muchas grabaciones porque siempre era yo la que moría).
 
 \section{Bibliografía}
 
