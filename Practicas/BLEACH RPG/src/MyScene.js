@@ -303,12 +303,12 @@ class MyScene extends Physijs.Scene {
         audio = "sounds/win.mp3";
       }
 
-      var audio_loader = new THREE.AudioLoader();
-       audio_loader.load(audio, function(buffer){
-         sonido_victoria.setBuffer(buffer);
-         sonido_victoria.setVolume(0.2);
-         sonido_victoria.play();
-       });
+      // var audio_loader = new THREE.AudioLoader();
+      //  audio_loader.load(audio, function(buffer){
+      //    sonido_victoria.setBuffer(buffer);
+      //    sonido_victoria.setVolume(0.2);
+      //    sonido_victoria.play();
+      //  });
     }
 
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"

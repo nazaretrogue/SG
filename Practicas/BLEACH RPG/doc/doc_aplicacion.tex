@@ -136,6 +136,16 @@ Los modelos de los personajes han sido sacados de los siguientes enlaces:
 	\item \textbf{Grimmjow}: \color{blue}\url{https://www.models-resource.com/wii/bleachversuscrusade/model/48/}\color{black}.
 \end{itemize}
 
+\section{Cómo acceder al juego}
+
+Para entrar al juego debemos acceder a través de localhost mediante el comando:
+
+\begin{lstlisting}[language=bash]
+$ python -m SimpleHTTPServer
+\end{lstlisting}
+
+Una vez ejecutado el comando solo debemos entrar a la dirección \color{blue}\url{http://localhost:8000/src/}\color{black}.
+
 \section{Cámara}
 
 La cámara es una cámara en tercera persona que sigue a nuestro protagonista. Es fija y no se puede mover, ya que la idea es que dé la sensación de que estamos viendo desde el hombro del personaje, como si fueramos un loro en el hombro de un pirata (de hecho, un poco por detrás y por encima, para que podamos ver también al propio personaje).\\
@@ -182,6 +192,11 @@ Tras la batalla, se escuchará una frase:
 	\item Si el protagonista pierde, una voz dirá: \textit{Mission failed. We'll get 'em next time}.
 	\item Si el protagonista gana, la voz dirá: \textit{You win}.
 \end{itemize}
+
+
+\section{Sonidos}
+
+Los sonidos se emiten cuando los personajes están golpeándose o cuando finaliza el juego. Al ejecutar el código en el navegador todo funciona correctamente, aunque pueden salir algunos warnings propios del uso de \texttt{AudioLoader}. No obstante, no hay ningún error en la ejecución.
 
 \section{Demo}
 
