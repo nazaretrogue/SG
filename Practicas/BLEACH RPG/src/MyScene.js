@@ -98,7 +98,7 @@ class MyScene extends Physijs.Scene {
              modelo_tu.disminuirVida(damage);
 
              var audio_loader = new THREE.AudioLoader();
-             audio_loader.load("sounds/sword.mp3", function(buffer){
+             audio_loader.load("../sounds/sword.mp3", function(buffer){
                sonido_espada.setBuffer(buffer);
                sonido_espada.setVolume(0.2);
                sonido_espada.play();
@@ -123,13 +123,40 @@ class MyScene extends Physijs.Scene {
     // el ángulo del campo de visión, el ratio ancho/alto y los planos de recorte cercano y lejano
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 10000);
 
+    // Y otra cámara para mirar desde arriba y ponerla como mapa
+    this.camera2 = new THREE.PerspectiveCamera(105, window.innerWidth/window.innerHeight, 0.1, 10000);
+
     // Se coloca cerca del hombro del personaje principal
     this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
 
+    // Está arriba
+    this.camera2.position.set(0, 50, 0);
+
     // Y mira más allá del personaje
     var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
+
+    // Mira hacia el 0, 0, 0
+    var look2 = new THREE.Vector3(0, 0, 0);
+
     this.camera.lookAt(look);
+    this.camera2.lookAt(look2);
     this.add(this.camera);
+    this.add(this.camera2);
+  }
+
+  renderViewport(escena, camara, left, top, width, height){
+    var l = left*window.innerWidth;
+    var t = top*window.innerHeight;
+    var w = width*window.innerWidth;
+    var h = height*window.innerHeight;
+
+    this.renderer.setViewport(l, t, w, h);
+    this.renderer.setScissor(l, t, w, h);
+    this.renderer.setScissorTest(true);
+
+    camara.aspect = w/h;
+    camara.updateProjectionMatrix();
+    this.renderer.render(escena, camara);
   }
 
   createGround() {
@@ -240,18 +267,24 @@ class MyScene extends Physijs.Scene {
     // Cada vez que el usuario modifica el tamaño de la ventana desde el gestor de ventanas de
     // su sistema operativo hay que actualizar el ratio de aspecto de la cámara
     this.camera.aspect = ratio;
+    this.camera2.aspect = ratio;
 
     // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
     this.camera.updateProjectionMatrix();
+    this.camera2.updateProjectionMatrix();
   }
 
   cameraUpdate(){
     // Actualizamos la posición cuando el personaje se mueve
     this.camera.position.set(this.ichigo.position.x-10, this.ichigo.position.y+7, this.ichigo.position.z-30);
+    this.camera2.position.set(0, 50, 0);
+
     var look = new THREE.Vector3(this.ichigo.position.x, this.ichigo.position.y+7, this.ichigo.position.z);
+    var look2 = new THREE.Vector3(0, 0, 0);
 
     // La cámara siempre mira más allá
     this.camera.lookAt(look);
+    this.camera2.lookAt(look2);
   }
 
   onWindowResize() {
@@ -277,6 +310,10 @@ class MyScene extends Physijs.Scene {
 
     // Se actualiza la posición de la cámara según el movimiento del personaje
     this.cameraUpdate();
+    this.renderViewport(this, this.camera, 0, 0, 1, 1);
+    this.renderViewport(this, this.camera2, 0.75, 0.1, 0.2, 0.3);
+
+    console.log(this.camera2);
 
     // Hay que actualizar las flags para que se muevan los objetos porque se
     // ponen a false en cada actualización
@@ -294,25 +331,22 @@ class MyScene extends Physijs.Scene {
       if(this.modelo_ichigo.vida <= 0){
         alert("¡Has perdido!");
         this.fin_juego = true;
-        audio = "sounds/lose.mp3";
+        audio = "../sounds/lose.mp3";
       }
 
       else if(this.modelo_grimmjow.vida <= 0){
         alert("¡ENHORABUENA! ¡Has ganado! Has recuperado tu alma");
         this.fin_juego = true;
-        audio = "sounds/win.mp3";
+        audio = "../sounds/win.mp3";
       }
 
-      // var audio_loader = new THREE.AudioLoader();
-      //  audio_loader.load(audio, function(buffer){
-      //    sonido_victoria.setBuffer(buffer);
-      //    sonido_victoria.setVolume(0.2);
-      //    sonido_victoria.play();
-      //  });
+      var audio_loader = new THREE.AudioLoader();
+       audio_loader.load(audio, function(buffer){
+         sonido_victoria.setBuffer(buffer);
+         sonido_victoria.setVolume(0.2);
+         sonido_victoria.play();
+       });
     }
-
-    // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
-    this.renderer.render(this, this.getCamera());
 
     // Simulación del escenario con motores de física
     this.simulate();
