@@ -102,6 +102,7 @@ Para explicar lo que debe hacer la aplicación se han definido unos requisitos f
 	\item RF5. Cada personaje tendrá puntos de vida.
 	\item RF6. Los puntos de vida de cada uno se verán en la pantalla en todo momento.
 	\item RF7. Se indicará cuando el personaje ha ganado o perdido.
+	\item RF8. Habrá un mini-map en el que se vea el escenario entero.
 \end{itemize}
 
 \subsection{Explicación de cada requisito}
@@ -114,6 +115,7 @@ Para explicar lo que debe hacer la aplicación se han definido unos requisitos f
 	\item RF5. Cada personaje tendrá una vida limitada y cuando ésta llegue a 0, el personaje habrá muerto.
 	\item RF6. Habrá un display con la vida de cada personaje que se actualizará cada vez que un personaje ataque al otro.
 	\item RF7. Cuando el personaje principal gane o pierda, se alertará desde el navegador con el resultado de la batalla. Además se escuchará una voz en off sentenciando el resultado de la pelea.
+	\item RF8. Se utilizará una cámara y un nuevo viewport para mostrar el mapa entero.
 \end{itemize}
 
 \section{Codificación}
@@ -150,7 +152,40 @@ Una vez ejecutado el comando solo debemos entrar a la dirección \color{blue}\ur
 
 La cámara es una cámara en tercera persona que sigue a nuestro protagonista. Es fija y no se puede mover, ya que la idea es que dé la sensación de que estamos viendo desde el hombro del personaje, como si fueramos un loro en el hombro de un pirata (de hecho, un poco por detrás y por encima, para que podamos ver también al propio personaje).\\
 
-La cámara siempre seguirá al personaje desde esta distancia fijada y aunque el personaje se gire, la cámara no lo hará.  
+La cámara siempre seguirá al personaje desde esta distancia fijada y aunque el personaje se gire, la cámara no lo hará. \\
+
+Hay una segunda cámara, situada arriba y mirando hacia el escenario. Esta cámara genera una vista de todo el mapa y de los personajes para tener una visión abstracta. Esta cámara se añade a la pantalla en un nuevo viewport, en la esquina inferior derecha, tal y como se puede ver en la imagen (se ha mostrado en una foto solo parte de la pantalla puesto que se veía un poco pequeña):
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.1]{img/mapa-big.png}
+	\includegraphics[scale=0.2]{img/mapa.png}
+\end{figure}
+
+\section{Materiales}
+
+Para crear los personajes se han utilizado sendos archivos \texttt{.mtl}, propios de los modelos.\\
+
+Para el alma del personaje se ha utilizado un material \texttt{MeshLambertMaterial}, ya que necesitaba un material mate (que no reflejara los brillos) pero que pudiera emitir luz. Se ha utilizado una emisión de luz azul claro y así parece que la esfera brilla suavemente en la escena.\\
+
+Además está rodeada por una caja creada con el material \texttt{MeshBasicMaterial}. La caja es transparente, con una opacacidad del 30\% solamente.\\
+
+Se puede observar en la siguiente imagen:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{img/alma.png}
+\end{figure}
+
+\section{Luces}
+
+Se han añadido varias luces a la escena para que se vea todo correctamente.
+
+\begin{itemize}
+	\item Luz ambiental en la escena: es una luz de tonalidad celeste claro. Da luz a la escena para que se vean los objetos y el escenrio.
+	\item Luz especular de la escena: es una luz fuerte de tonalidad violeta, ya que el escenario está situado en una cueva rocosa donde los brillos los generan gemas y cristales morados.
+	\item Luz especular del alma: es una luz fuerte de color blanco puro. Genera un halo blanco alrededor del alma.
+\end{itemize}
 
 \section{Simulación con físicas}
 
@@ -162,6 +197,13 @@ Además, se ha creado una estructura que une un suelo con cuatro paredes para qu
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.23]{img/fisica.png}
+\end{figure}
+
+Para que las paredes no cayeran si los personajes chocaban contra ellas, es necesario crear una pequeña jerarquía donde las paredes cuelgan directamente del suelo en el grafo de creación, y el suelo a su vez cuelga directamente de la escena.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{img/grafo.png}
 \end{figure}
 
 Por otro lado, el objeto que se ha de recuperar (el alma de nuestro personaje), es una malla de THREEjs simple, no es un objeto físico puesto que no es necesario que lo sea.\\
@@ -196,8 +238,9 @@ Tras la batalla, se escuchará una frase:
 
 \section{Sonidos}
 
-Los sonidos se emiten cuando los personajes están golpeándose o cuando finaliza el juego. Al ejecutar el código en el navegador todo funciona correctamente, aunque pueden salir algunos warnings propios del uso de \texttt{AudioLoader}. No obstante, no hay ningún error en la ejecución.
+Los sonidos se emiten cuando los personajes están golpeándose o cuando finaliza el juego. Al ejecutar el código en el navegador todo funciona correctamente, aunque pueden salir algunos warnings o errores propios del uso de \texttt{AudioLoader}.\\
 
+Sin embargo, los sonidos se siguen escuchando y la ejecución del juego es correcta. No he conseguido eliminar los errores pero como no afectaba al desarrollo de la partida, he decidido dejarlos y no darles importancia.
 \section{Demo}
 
 En este \texttt{.zip} se incluye una pequeña demo de 40 segundos para mostrar la muerte del enemigo, ya que es lo más complicado del juego. Que sea el personaje principal quién muera es más sencillo (este vídeo ha salido después de muchas grabaciones porque siempre era yo la que moría).
